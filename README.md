@@ -7,8 +7,10 @@ Lily-ann Stenberg (02list15@gmail.com)
 Jonathan Edenlund (Jonathan.edenlund@hotmail.com)
 Jennifer Hallberg (jennifer.l.hallberg@gmail.com)
 Lukas Åkefeldt (Lukas.akefeldt@gmail.com)
-Wanda Wannelöf (123vincentstocks@gmail.com)
+Wanda Wannelöf (wanda.wanne@gmail.com)
 Vincent Stocks (123vincentstocks@gmail.com)
+Alva Stöckel (alva.stockel@hotmail.com)
+
 
 Project Overview
 Our group project is to develop a software application using agile methodologies. The application aims to solve a specific problem or provide a specific service. Further details about the project, including requirements, user stories, and acceptance criteria, can be found in the docs folder.
