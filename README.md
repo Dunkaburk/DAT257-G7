@@ -3,7 +3,7 @@ DAT257 Agile Software Project Management - Group 7
 Welcome to Group 7's Git repository for the DAT257 Agile Software Project Management course! This README provides an overview of our group project and the repository structure. Please read this file carefully to understand how the project is organized.
 
 Group Members
-Lily-ann Stenberg (02list15@gmail.com)
+Lilly-Ann Stenberg (02list15@gmail.com)
 Jonathan Edenlund (Jonathan.edenlund@hotmail.com)
 Jennifer Hallberg (jennifer.l.hallberg@gmail.com)
 Lukas Åkefeldt (Lukas.akefeldt@gmail.com)
