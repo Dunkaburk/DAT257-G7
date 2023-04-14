@@ -1,0 +1,14 @@
+﻿Week: 2
+Time spent: 8 hrs
+
+* What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+
+I want to understand Android Studio and Compose better. Our teamwork is good, and we collaborate well together. We have a pretty good grasp on scrum and agile processes but we need to become more familiar with the software to work effectively.
+
+* What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+
+This week was very short and included a lot of troubleshooting because of how unfamiliar I was with Android Studio, so not a lot of work was done. My assigned User Story isn’t finished, but I am working on it. My own contributions this week included setup and file structure creation, which isn’t much to look at yet, but it will be soon! When I have gained more knowledge about Compose I will be able to help my teammates with issues they encounter while programming next week.
+
+* Changes/improvements from last week's reflection?
+
+This was my first reflection :)
