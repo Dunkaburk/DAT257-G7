@@ -5,6 +5,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 
+/*
 class AndroidSensor
 (
     private val context: Context,
@@ -50,4 +51,4 @@ MeasureableSensor(sensorType), SensorEventListener {
 
         override fun onAccuracyChanged(p0: Sensor?, p1: Int) = Unit
     }
-}
+}*/
