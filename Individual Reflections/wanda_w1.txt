@@ -1,0 +1,15 @@
+Week: 
+LV2b
+
+Time spent: 
+7h
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I want to learn how to work more accordingly to Scrum. I also want to learn how to make an app for android, this by learning how to work in Kotlin and also with Android Studio.
+
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+Setting up my workspace so that I can work and also easily share it with my team via github. I have also contributed with ideas during meetings on how we could go forward with our project.
+
+Changes/improvements from last week's reflection?
+Since this is the first week, there are no changes or improvements.
