@@ -1,6 +1,7 @@
 package com.example.group7.Model
 
-
+import org.json.JSONObject
+import java.io.File
 
 class BodyInfo {
     private var height: String = ""
@@ -8,29 +9,24 @@ class BodyInfo {
     private var age: Int = 0
     private var gender: String = ""
 
-    fun setHeight(height: String) {
+    fun storeInfo(height: String, weight: Int, age: Int, gender: String) {
         this.height = height
-    }
-    fun setWeight(weight: Int) {
         this.weight = weight
-    }
-    fun setAge(age: Int) {
         this.age = age
-    }
-    fun setGender(gender: String) {
         this.gender = gender
-    }
 
-    fun getHeight(): String {
-        return height
+        val json = JSONObject()
+        json.put("height", height)
+        json.put("weight", weight)
+        json.put("age", age)
+        json.put("gender", gender)
+
+        val file = File("body_info.json")
+        file.writeText(json.toString())
     }
-    fun getWeight(): Int {
-        return weight
-    }
-    fun getAge(): Int {
-        return age
-    }
-    fun getGender(): String {
-        return gender
+    fun readInfo(): JSONObject {
+        val file = File("body_info.json")
+        val json = JSONObject(file.readText())
+        return json
     }
 }

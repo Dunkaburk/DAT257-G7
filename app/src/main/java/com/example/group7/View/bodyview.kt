@@ -14,7 +14,7 @@ import java.lang.reflect.Modifier
 fun bodyview(bodyInfo: BodyInfo) {
 
     Text(
-        text = "Height: ${bodyInfo.getHeight()}"
+        text = "Body Info"
     )
 }
 
