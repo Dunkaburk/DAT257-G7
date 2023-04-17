@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.example.group7.Model.BodyInfo
 import java.lang.reflect.Modifier
 
+
 @Composable
 fun bodyview(bodyInfo: BodyInfo) {
 
