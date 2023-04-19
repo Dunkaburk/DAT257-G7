@@ -1,0 +1,19 @@
+Week: 1
+
+
+Time spent:
+14
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I want to efficiently work together, and to get a good start. I also want to get a good understanding
+of kotlin and android development via compose, so that I can efficiently contribute to the project.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+I have created a basic project structure, and have started to implement the first screen. I have also
+started to learn kotlin and compose.
+
+in order to do better next week, i should be more communicative with the team, and i should ask for help
+when i get stuck.
+
+Changes/improvements from last week's reflection?
+there were no reflections last week
