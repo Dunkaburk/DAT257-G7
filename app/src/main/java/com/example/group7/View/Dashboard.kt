@@ -1,43 +1,39 @@
 package com.example.group7.View
 
 
+//import androidx.navigation.NavController
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
-//import androidx.navigation.NavController
-import com.example.group7.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun Dashboard(){
@@ -98,22 +94,92 @@ fun DashboardContent(/*navController: NavController*/) {
 
                 item { ProgressCard("Steps",progress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }) }
                 item { ProgressCard("Sleep",progress, { SleepProgress(sleepProgress = stepCount, sleepGoal = stepsGoal) }) }
-                item { LinearProgressIndicatorTestfunnyhaha()}
-
-                val list = (0..75).map { it.toString() } //Helt arbiträrt antal listItems för att visa hur man kan scrolla
-                items(count = list.size) {
-                    Text(
-                        text = list[it],
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    )
-                }
-
+                item { WaterIntakePanel()}
             }
         }
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WaterIntakePanel() {
+    val paddingModifier = Modifier.padding(12.dp)
+    var waterCount by remember { mutableStateOf(0) }
+    Card(
+        border = BorderStroke(5.dp, MaterialTheme.colorScheme.secondary),
+        modifier = paddingModifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .padding(10.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "Water Intake",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+                Text(
+                    text = "$waterCount glasses",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedButton(
+                    modifier = Modifier.padding(8.dp),
+                    onClick = { if (waterCount > 0) waterCount--},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF313131))
+                ) {
+                    Text(text = "-", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                }
+                OutlinedButton(
+                    modifier = Modifier.padding(8.dp),
+                    onClick = { waterCount++ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF313131))
+                ) {
+                    Text(text = "+", fontSize = 28.sp)
+                }
+                Icon(
+                    modifier = Modifier.size(28.dp).padding(start = 4.dp),
+                    imageVector = Icons.Filled.Delete, // TODO INSERT WATER ICON
+                    contentDescription = "Glass of water"
+                )
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SleepPanel() {
+}
+
+fun DailyStepsPanel() {
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CardWithBorder() {
+    val paddingModifier = Modifier.padding(10.dp)
+    Card(
+        border = BorderStroke(1.dp, Color(0xFF000000)),
+        modifier = paddingModifier
+    ) {
+        Text(text = "Card with blue border", modifier = paddingModifier)
+        Text(text = "Second Text", modifier = paddingModifier)
+    }
 }
 
 
