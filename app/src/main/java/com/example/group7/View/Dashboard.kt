@@ -1,46 +1,60 @@
 package com.example.group7.View
 
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.SmallTopAppBar
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode.Companion.Color
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 //import androidx.navigation.NavController
 import com.example.group7.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Preview
 fun Dashboard(){
-    AmbundiTopAppBar()
-
+    DashboardContent()
 }
 
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AmbundiTopAppBar(/*navController: NavController*/) {
+fun DashboardContent(/*navController: NavController*/) {
     //val logo: Painter = painterResource(R.drawable.ambundi_logo)
-
+    var stepsGoal by remember { mutableStateOf(10000) }
+    var stepCount by remember { mutableStateOf(0) }
+    var sleepGoal by remember { mutableStateOf((8*60)) }
+    var sleepCount by remember { mutableStateOf((2*60)) }
+    var progress by remember { mutableStateOf(0.2f) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -81,6 +95,11 @@ fun AmbundiTopAppBar(/*navController: NavController*/) {
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+
+                item { ProgressCard("Steps",progress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }) }
+                item { ProgressCard("Sleep",progress, { SleepProgress(sleepProgress = stepCount, sleepGoal = stepsGoal) }) }
+                item { LinearProgressIndicatorTestfunnyhaha()}
+
                 val list = (0..75).map { it.toString() } //Helt arbiträrt antal listItems för att visa hur man kan scrolla
                 items(count = list.size) {
                     Text(
@@ -91,11 +110,199 @@ fun AmbundiTopAppBar(/*navController: NavController*/) {
                             .padding(horizontal = 16.dp)
                     )
                 }
+
             }
         }
     )
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composable () -> Unit ) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
+            .clickable { /* TODO Navigate to chosen screen */ },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp)
+    ) {
+        Row(modifier = Modifier.height(100.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .fillMaxHeight()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = title,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        textAlign = TextAlign.Left,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.W900,
+                        color = Color(0xFFFFFFFF),
+
+                    )
+
+                    Progress()
+
+
+                }
+
+
+                }
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(end = 36.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.82f)
+                        .padding(end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center)
+                {
+                    Text(text = (progressPercentage*100).toInt().toString()+"%", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp))
+                    CustomLinearProgressBar(InitProgress = progressPercentage)
+                }
+                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Say what", modifier = Modifier
+                    .size(28.dp)
+                    .padding(start = 5.dp))
+
+                // Progressbar() TODO make progressbar
+            }
+
+            }
+
+        }
+
+    }
+
+
+@Composable
+private fun CustomLinearProgressBar(InitProgress: Float){
+    var progress by remember { mutableStateOf(InitProgress) }
+    val animatedProgress = animateFloatAsState(
+        targetValue = progress,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    ).value
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        LinearProgressIndicator(
+            progress = progress,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp)
+                .clip(RoundedCornerShape(50.dp))
+                .height(8.dp),
+            color = Color(0xFF3B7CD9),
+            trackColor = Color(0xFF1B3861)
+        )
+    }
+}
+
+@Composable
+fun LinearProgressIndicatorTestfunnyhaha() {
+    var progress by remember { mutableStateOf(0.1f) }
+    val animatedProgress = animateFloatAsState(
+        targetValue = progress,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    ).value
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Spacer(Modifier.height(30.dp))
+        Text("LinearProgressIndicator with progress set by buttons")
+        LinearProgressIndicator(progress = animatedProgress)
+        Spacer(Modifier.height(30.dp))
+        OutlinedButton(
+            onClick = {
+                if (progress < 1f) progress += 0.1f
+            }
+        ) {
+            Text("+")
+        }
+
+        OutlinedButton(
+            onClick = {
+                if (progress > 0f) progress -= 0.1f
+            }
+        ) {
+            Text("-")
+        }
+    }
+}
+
+
+@Composable
+fun StepsProgress(stepsProgress : Int, stepsGoal : Int) {
+    var steps by remember { mutableStateOf(stepsProgress) }
+    Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
+    {
+        Text(
+            buildAnnotatedString {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.W400, color = Color(0xFFFFFFFF), fontSize = 24.sp)
+                ) {
+                    append(steps.toString())
+                }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.W900, color = Color(0xFFFFFFFF), fontSize = 28.sp)
+                ) {
+                    append(" / ")
+                }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.W300, color = Color(0xFFFFFFFF), fontSize = 18.sp)
+                ) {
+                    append(stepsGoal.toString())
+                }
+            }
+        )
+
+    }
+}
+
+@Composable
+fun SleepProgress(sleepProgress : Int, sleepGoal : Int) {
+    var sleep by remember { mutableStateOf(sleepProgress) }
+    var remainingSleep by remember { mutableStateOf(sleepGoal - sleep) }
+    var remainingHours by remember { mutableStateOf(remainingSleep / 60) }
+    var remainingMinutes by remember { mutableStateOf(remainingSleep % 60) }
+
+    Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
+    {
+        Text(
+            buildAnnotatedString {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.W400, color = Color(0xFFFFFFFF), fontSize = 18.sp)
+                ) {
+                    append(remainingHours.toString())
+                }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.W900, color = Color(0xFFFFFFFF), fontSize = 20.sp)
+                ) {
+                    append(" hrs ")
+                }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.W300, color = Color(0xFFFFFFFF), fontSize = 18.sp)
+                ) {
+                    append(remainingMinutes.toString())
+                }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.W300, color = Color(0xFFFFFFFF), fontSize = 18.sp)
+                ) {
+                    append(" mins left")
+                }
+            }
+        )
+
+    }
+}
 
 
 //------------------------------------------------------------
