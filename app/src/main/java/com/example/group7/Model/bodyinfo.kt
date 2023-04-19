@@ -3,6 +3,7 @@ package com.example.group7.Model
 import org.json.JSONObject
 import java.io.File
 
+// testing for co-author
 class BodyInfo {
     private var height: String = ""
     private var weight: Int = 0
