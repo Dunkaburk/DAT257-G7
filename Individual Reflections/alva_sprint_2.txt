@@ -1,0 +1,17 @@
+Week: 2
+
+
+Time spent: 15h
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I want to get a deeper understanding about the technologies involved when creating a new app. I feel like I learn more and more each day and 
+will hopefully get to use what I learned in future projects. 
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+I have been a part of all the teams meetings and contributed with my ideas and thought. I have been working with implementing the stepcounter 
+and to get the correct value to appear on the dashboard as well as looked into other sensors we might want to use in our app. I have also researched 
+about what API we want to use for distance and started with a list with cities and distance that we can use in the first versions of choosable goals. 
+
+Changes/improvements from last week's reflection?
+This week felt better, I started this sprint with more understanding about the project, language and android studio and could therefore spend more
+time working with the actual project rather than the setup. I also had more time this week which resulted in better results than the previous week. 
