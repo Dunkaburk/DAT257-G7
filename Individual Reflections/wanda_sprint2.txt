@@ -1,0 +1,13 @@
+Week: 2
+
+Time spent:
+11h
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I want to better learn how to work with testing in Kotlin so that we can easily understand the quality of our code and how to improve it. I would like to get better in asking for help from my team mates. I'd like to learn how to work more effectively when couple programming whenever we get stuck because of trouble shooting our work enviourment.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+Been active in our discussions on how we're working as a team and try to figure out how to do it more effective. I try to stay active to help with questions my team mates have whereever I can. Have come close to finishing the user story me and another team mate is working on (make a page for entering body information).
+
+Changes/improvements from last week's reflection?
+Been asking my team and others questions on how Scrum works/should work to better understand how we are doing as a team. Been trying to get better to ask for help when I get stuck on things that feel like they should be easy to solve myself, when in reality one could save some time just asking a friend or team mate.
