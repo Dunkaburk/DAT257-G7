@@ -30,7 +30,7 @@ fun StartScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Image(
-            painter = painterResource(id = R.drawable.eo_logo_launcher),
+            painter = painterResource(id = R.drawable.eo_logo),
             "content description"
         )
         LoadingAnimation()
