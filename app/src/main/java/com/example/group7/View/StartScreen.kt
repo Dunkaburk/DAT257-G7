@@ -24,13 +24,14 @@ fun StartScreen() {
 
     Column(
         modifier = Modifier
-            .background(Color.White)
+            .background(Color.Black)
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
+
     ){
         Image(
-            painter = painterResource(id = R.drawable.eo_logo),
+            painter = painterResource(id = R.drawable.eologo),
             "content description"
         )
         LoadingAnimation()
