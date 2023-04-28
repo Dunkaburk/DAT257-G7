@@ -29,8 +29,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             AmbundiTheme {
                 navController = rememberNavController()
-                SetupNavGraph(navHostController = navController)
 
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    SetupNavGraph(navHostController = navController)
+                }
 
             }
         }
