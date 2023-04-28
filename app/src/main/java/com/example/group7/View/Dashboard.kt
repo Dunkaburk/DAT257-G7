@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.SpanStyle
@@ -34,26 +35,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
-import com.example.group7.R
+
 
 @Composable
 @Preview
-fun Dashboard(){
+fun Dashboard() {
     DashboardContent()
 }
 
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardContent(/*navController: NavController*/) {
+fun DashboardContent(/*navController: NavController*/ ) {
     //val logo: Painter = painterResource(R.drawable.ambundi_logo)
-    var stepsGoal by remember { mutableStateOf(10000) }
-    var stepCount by remember { mutableStateOf(0) }
-    var sleepGoal by remember { mutableStateOf((8*60)) }
-    var sleepCount by remember { mutableStateOf((2*60)) }
-    var progress by remember { mutableStateOf(0.2f) }
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        var stepsGoal by remember { mutableStateOf(10000) }
+        var sleepGoal by remember { mutableStateOf((8 * 60)) }
+        var sleepCount by remember { mutableStateOf((2 * 60)) }
+        var progress by remember { mutableStateOf(0.2f) }
+        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -93,6 +93,7 @@ fun DashboardContent(/*navController: NavController*/) {
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+
                 item { DailyGoalsCard() }
                 item { ProgressCard("Steps",progress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }) }
                 item { ProgressCard("Sleep",progress, { SleepProgress(sleepProgress = stepCount, sleepGoal = stepsGoal) }) }
