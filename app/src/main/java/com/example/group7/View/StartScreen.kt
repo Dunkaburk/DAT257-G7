@@ -11,30 +11,51 @@ import androidx.compose.ui.res.painterResource
 import com.example.group7.ui.theme.*
 import com.example.group7.R
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.group7.ViewModel.Screen
 import kotlinx.coroutines.delay
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun StartScreen() {
-
+fun StartScreen(
+    navController: NavController
+) {
     Column(
         modifier = Modifier
-            .background(Color.White)
+            .background(Color.Black)
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Image(
-            painter = painterResource(id = R.drawable.eo_logo_launcher),
+
+            painter = painterResource(id = R.drawable.eologo),
             "content description"
         )
-        LoadingAnimation()
-    }
 
+
+        LoadingAnimation()
+        Text(
+            modifier = Modifier.clickable{
+                navController.navigate(Screen.Dashboard.route)
+            },
+            text = "Next",
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+
+@Composable
+@Preview(showBackground = true)
+fun StartScreenPreview(){
+    StartScreen(
+        navController = rememberNavController()
+    )
 }
 
