@@ -1,0 +1,19 @@
+Week: 3
+
+
+Time spent: 10 hrs
+
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+
+As of this moment, I am not 100% sure. When I assign myself to an unfinished user story next week I will know what I need to dive into and learn more about.
+
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+
+Jonathan and I pair-programmed again this week. We created a View for the Steps panel that is displayed when you tap the Steps widget on the Dashboard. It allows the user to see progress towards their step goals and, if the user does not have a goal, it allows them to set one with a particular number of steps. Our User Story went well and we finished it on time, but our other team members had some issues, so we are considering changing partners for the next sprint to see if that solves the issues. A fresh perspective might be what we need in each subgroup.
+
+
+Changes/improvements from last week's reflection?
+
+This week was just as effective for me, since we continued as we did last week with pair programming in person. 
