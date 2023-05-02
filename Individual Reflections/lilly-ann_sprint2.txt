@@ -1,0 +1,13 @@
+Week: 2 (sprint 2)
+Time spent: 12 hrs
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+
+I would like to learn how to conduct code tests in Kotlin in order to improve the quality of my code.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+
+My contributions this week included designing several cards for the main page with Jonathan. Next week I aim to help my teammates with tech problems and be more active with responding to questions in our Discord forum.
+
+Changes/improvements from last week's reflection?
+
+Pair programming was very effective, and I feel like Jonathan and I got a lot more done when working together in the same room. We could ask each other questions and make design choices together, which shortened the overall time it took to implement our User Story.
