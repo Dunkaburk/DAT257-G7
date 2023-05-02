@@ -1,0 +1,16 @@
+Week: 3 
+
+Time spent: 15h
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+This week I feel like I've gotten a better understanding about the agile work flow. I think the team work has been working fine, and the next week we decided 
+to switch the pairs that we program with I think that that will help with teamwork even more. 
+this has given me an understanding on how the tasks work and also how to make the tasks a good size so that they can be finished in one sprint. 
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+As previous weeks I have been a part of all the teams meetings and contributed with my ideas and thought. I have also kept working with the stepsensor and 
+implementation of a maps API to be able to calculate distance between cities. 
+
+Changes/improvements from last week's reflection?
+This week has been better than previous week. I have been working with the same issue as before, but feel like this week has been closer to make the task 
+finished. It got me thinking that we should make the tasks smaller to make it possible to finish them in one sprint. 
