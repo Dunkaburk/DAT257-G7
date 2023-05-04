@@ -1,0 +1,13 @@
+Sprint: 3
+
+Time spent:
+7h
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I want to be able to plan out my other course's work differently so that I can better contribute to the team and project more effectively. I also want to learn even more about kotlin and how we best merge our parts together smoothly.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+I have not been as active during this sprint, partly because of sickness and partly because of higher workload in my other course. Joined the sprint-meeting from home while ill, and tried to stay as active as possible during the discussions even though there were some technical issues hearing eachother.
+
+Changes/improvements from last week's reflection?
+Started to reflect on how my other course work effect the project and started to think about how to improve my schedule so that I can become a better teammate.
