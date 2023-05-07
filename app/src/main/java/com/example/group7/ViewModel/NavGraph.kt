@@ -13,13 +13,13 @@ fun SetupNavGraph(
 ){
     NavHost(
         navController = navHostController,
-        startDestination = Screen.SplashScreen.route
+        startDestination = Screen.Dashboard.route
     ){
-        composable(
+       /* composable(
             Screen.SplashScreen.route
         ){
-            SplashScreen(navHostController)
-        }
+            SplashScreen()
+        } */
         composable(
             Screen.Dashboard.route
         ){
