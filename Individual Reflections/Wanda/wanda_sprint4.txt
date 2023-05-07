@@ -1,0 +1,13 @@
+Sprint: 4
+
+Time spent:
+16h
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I want to understand git and how to figure out what solutions to use when we walk into problems regarding git.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+I have worked on making it possible to choose a goal. There are still a few details to be worked out, which we think might be a good thing to work on during the next sprint. I want to be able to put more time into the project when I have worked out my schedule with the other course. Hopefully I won't be as high of a workload in the other course the coming sprint, so that I can focus more on our app.
+
+Changes/improvements from last week's reflection?
+Have had an easier time to plan when to work together with my team, although it could still use a little bit more work.
