@@ -1,0 +1,16 @@
+Week: 3
+
+
+Time spent: 6 Hours
+
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I want to become more sure of how kotlin works aswell as how to use mvvm.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+this week i have not contributed as much as i should have due to alot in the other course.
+next week I have planned out the week better in order to contribute more to the team.
+
+Changes/improvements from last week's reflection?
+I have understood better how to plan out my week in order to more efficiently work on the project
+and balance it with the other course.
