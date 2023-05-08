@@ -1,0 +1,16 @@
+Week: 4
+
+
+Time spent: 10 hours
+
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+i want to further develop my understanding of the project. most of the time this week was spent
+trying to resolve an issue with my ide settings.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+i was involved with calculating the distance and amount of steps between two points using the google api.
+this week i was in london so i did not work. so next week i will be more involved with the project.
+
+Changes/improvements from last week's reflection?
+i really enjoyed that we switched about our groups. it was a good learning experience to work with new people.
