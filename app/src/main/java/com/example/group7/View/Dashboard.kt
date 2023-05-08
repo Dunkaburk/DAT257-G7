@@ -4,7 +4,7 @@ package com.example.group7.View
 //import androidx.navigation.NavController
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,11 +36,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
+import com.example.group7.R
+import com.example.group7.ui.theme.AmbundiTheme
 
 
 @Composable
 @Preview
-fun Dashboard() {
+fun Dashboard(){
     DashboardContent()
 }
 
@@ -68,10 +71,10 @@ fun DashboardContent(/*navController: NavController*/ ) {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* doSomething() */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Delete, // TODO INSERT APP ICON HERE
-                            contentDescription = "Localized description"
+                    IconButton(onClick = { /* Send me to Dashboard */ }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.eologo),
+                            contentDescription = null // decorative element
                         )
                     }
                 },
@@ -92,13 +95,15 @@ fun DashboardContent(/*navController: NavController*/ ) {
         content = { innerPadding ->
             LazyColumn(
                 contentPadding = innerPadding,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
             ) {
 
-                item { DailyGoalsCard() }
+                //item { DailyGoalsCard() }
                 item { ProgressCard("Steps",progress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }) }
                 item { ProgressCard("Sleep",progress, { SleepProgress(sleepProgress = stepCount, sleepGoal = stepsGoal) }) }
-                item { WaterIntakePanel() }
+                item { WaterIntakePanel()}
+                //item { ChooseGoalTypePanel()}
             }
         }
     )
@@ -110,8 +115,13 @@ fun WaterIntakePanel() {
     val paddingModifier = Modifier.padding(12.dp)
     var waterCount by remember { mutableStateOf(0) }
     Card(
-        border = BorderStroke(5.dp, MaterialTheme.colorScheme.primary),
-        modifier = paddingModifier.fillMaxWidth()
+        //border = BorderStroke(5.dp, MaterialTheme.colorScheme.secondary),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
+            .clickable { /* TODO Navigate to chosen screen */ },
+        elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxSize()
@@ -124,16 +134,14 @@ fun WaterIntakePanel() {
             ) {
                 Text(
                     text = "Water Intake",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    modifier = Modifier.padding(start = 5.dp)
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.W900,
+                    maxLines = 1
                 )
                 Text(
                     text = "$waterCount glasses",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 5.dp)
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal
                 )
             }
             Row(
@@ -142,7 +150,6 @@ fun WaterIntakePanel() {
                 OutlinedButton(
                     modifier = Modifier.padding(8.dp),
                     onClick = { if (waterCount > 0) waterCount--},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF313131))
                 ) {
                     Text(text = "-", fontSize = 28.sp, fontWeight = FontWeight.Bold)
                 }
@@ -155,7 +162,7 @@ fun WaterIntakePanel() {
                 }
                 Icon(
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(24.dp)
                         .padding(start = 4.dp),
                     imageVector = Icons.Filled.Delete, // TODO INSERT WATER ICON
                     contentDescription = "Glass of water"
@@ -164,21 +171,6 @@ fun WaterIntakePanel() {
         }
     }
 }
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CardWithBorder() {
-    val paddingModifier = Modifier.padding(10.dp)
-    Card(
-        border = BorderStroke(1.dp, Color(0xFF000000)),
-        modifier = paddingModifier
-    ) {
-        Text(text = "Card with blue border", modifier = paddingModifier)
-        Text(text = "Second Text", modifier = paddingModifier)
-    }
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -211,17 +203,10 @@ fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composab
                             .padding(horizontal = 12.dp, vertical = 8.dp),
                         textAlign = TextAlign.Left,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.W900,
-                        color = Color(0xFFFFFFFF),
-
+                        fontWeight = FontWeight.W900
                     )
-
                     Progress()
-
-
                 }
-
-
                 }
             Row(
                 modifier = Modifier
@@ -242,7 +227,7 @@ fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composab
                     CustomLinearProgressBar(InitProgress = progressPercentage)
                 }
                 Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Say what", modifier = Modifier
-                    .size(28.dp)
+                    .size(24.dp)
                     .padding(start = 5.dp))
 
                 // Progressbar() TODO make progressbar
@@ -254,25 +239,25 @@ fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composab
 
     }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DailyGoalsCard(){
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
-            .clickable { /* TODO Navigate to chosen screen */ },
+            .clickable { *//* TODO Navigate to chosen screen *//* },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp),
         border = BorderStroke(1.dp, Color(0xFF000000)),
-    ) 
+    )
     {
         Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
         {
             Text(text = "Daily remaining Goals", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp).align(Alignment.CenterVertically))
         }
         Divider(color = Color(0xFF000000), thickness = 2.dp, modifier = Modifier.fillMaxWidth(0.8f))
-        /*Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
+        *//*Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
         {
             Text(
                 buildAnnotatedString {
@@ -300,13 +285,13 @@ fun DailyGoalsCard(){
             //val logo: Painter = painterResource(R.drawable.ambundi_logo)
             Text(text = "GLASSES", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp))
             Icon(painter = painterResource(R.drawable.ic_launcher_background), contentDescription = "Botuh of watuh", modifier = Modifier.size(28.dp).align(Alignment.CenterVertically))
-        }*/
+        }*//*
 
 
 
     }
-}
-           
+}*/
+
 
 
 @Composable
@@ -421,6 +406,8 @@ fun SleepProgress(sleepProgress : Int, sleepGoal : Int) {
 
     }
 }
+
+
 
 
 //------------------------------------------------------------
