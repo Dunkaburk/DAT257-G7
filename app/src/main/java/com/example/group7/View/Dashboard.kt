@@ -58,8 +58,7 @@ fun DashboardContent(/*navController: NavController*/ ) {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
 
-        //placeholder for testing purposes, will be replaced with info from step sensor
-        val stepCount = 0
+
 
 
 
