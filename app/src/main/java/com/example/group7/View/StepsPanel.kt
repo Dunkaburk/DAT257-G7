@@ -42,7 +42,7 @@ import com.example.group7.R
      var progress by remember { mutableStateOf(0.2f) }
      var showDialog by remember { mutableStateOf(false) }
      var hasIndividualGoal by remember { mutableStateOf(false) } // TODO make getter and setter for this variable and set to false first time a user opens app and when goal is completed
-     var goalProgress by remember { mutableStateOf(((stepCount/stepsGoal).toFloat())) }
+     var goalProgress by remember { mutableStateOf(stepCount.toFloat()/stepsGoal.toFloat()) }
 
      val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
      Scaffold(
@@ -84,7 +84,7 @@ import com.example.group7.R
              contentPadding = innerPadding,
              verticalArrangement = Arrangement.spacedBy(8.dp)
          ) {
-             //item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
+//             item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
              if (hasIndividualGoal) item { IndividualGoalsCard( { showDialog = true }, goalProgress )}
              if (showDialog) item {
                  CustomGoalPopup(
@@ -95,7 +95,13 @@ import com.example.group7.R
                          showDialog = false
                      })
              }
-             item { ChooseGoalPanel({ showDialog = true }) }
+             item { ChooseGoalPanel (onSaveClicked = { steps ->
+                 stepsGoal = steps
+                 println("Steps goal updated: $stepsGoal")
+                 hasIndividualGoal = true
+                 goalProgress = stepCount.toFloat()/stepsGoal.toFloat()
+             })
+             }
          }
      }
  }
@@ -210,7 +216,7 @@ import com.example.group7.R
 
                  Box(modifier = Modifier.align(Alignment.Center)) {
                      var goalPercentage = (goalProgress) * 100
-                     Text(text = "60% to Mordor", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodyLarge)
+                     Text(text = "$goalPercentage% of goal reached", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodyLarge)
                  }
              }
 
@@ -261,15 +267,68 @@ import com.example.group7.R
 
 
 
- @OptIn(ExperimentalMaterial3Api::class)
- @Composable
- fun ChooseGoalPanel(OnClickAction: () -> Unit){
-     Card( modifier = Modifier
-         .fillMaxWidth()
-         .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
-         elevation = CardDefaults.cardElevation(
-             defaultElevation = 10.dp)){
-         Text(
+// @OptIn(ExperimentalMaterial3Api::class)
+// @Composable
+// fun ChooseGoalPanel(OnClickAction: () -> Unit){
+//     Card( modifier = Modifier
+//         .fillMaxWidth()
+//         .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
+//         elevation = CardDefaults.cardElevation(
+//             defaultElevation = 10.dp)){
+//         Text(
+//             text = "Choose the type of goal",
+//             textAlign = TextAlign.Center,
+//             style = MaterialTheme.typography.headlineSmall,
+//             modifier = Modifier.align(Alignment.CenterHorizontally)
+//         )
+//         var tabIndex by remember { mutableStateOf(0) }
+//
+//         val tabs = listOf("City to city", "Imaginative", "Custom")
+//
+//         Column(modifier = Modifier.fillMaxWidth()) {
+//             TabRow(selectedTabIndex = tabIndex) {
+//                 tabs.forEachIndexed { index, title ->
+//                     Tab(text = { Text(title) },
+//                         selected = tabIndex == index,
+//                         onClick = { tabIndex = index }
+//                     )
+//                 }
+//             }
+//             when (tabIndex) {
+//                 0 -> CityToCityTab()
+//                 1 -> ImaginativeGoalsTab()
+//                 2 -> CustomStepsTab()
+//             }
+//         }
+//         OutlinedButton(
+//             onClick = {
+//                       if (tabIndex == 2) {
+//
+//                       }/* TODO save current goal */
+//                    },
+//             modifier = Modifier
+//                 .padding(10.dp)
+//                 .align(Alignment.CenterHorizontally))
+//         {
+//             Text("Save goal", fontSize = 18.sp)
+//             //hasIndividualGoal = true
+//         }
+//     }
+// }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
+    var steps by remember { mutableStateOf(0) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Text(
              text = "Choose the type of goal",
              textAlign = TextAlign.Center,
              style = MaterialTheme.typography.headlineSmall,
@@ -290,44 +349,70 @@ import com.example.group7.R
              }
              when (tabIndex) {
                  0 -> CityToCityTab()
-                 1 -> ImaginativeGoalsTab()
-                 2 -> CustomStepsTab()
+                 1 -> ImaginativeGoalsTab(onTabValueChanged = { value -> steps = value})
+                 2 -> CustomStepsTab(onTabValueChanged = { value ->
+                     steps = value
+                 })
              }
          }
-         OutlinedButton(
-             onClick = {/* TODO save current goal */},
-             modifier = Modifier
-                 .padding(10.dp)
-                 .align(Alignment.CenterHorizontally))
-         {
-             Text("Save goal", fontSize = 18.sp)
-             //hasIndividualGoal = true
-         }
-     }
- }
+        OutlinedButton(
+            onClick = {
+                if (tabIndex == 0) {
+                    throw NotImplementedError() // TODO Requires information from API
+                } else {
+                    onSaveClicked(steps)
+                }/* TODO save current goal */
+            },
+            modifier = Modifier
+                .padding(10.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Text("Save goal", fontSize = 18.sp)
+            //hasIndividualGoal = true
+        }
+    }
+}
+
+
+// @Composable
+// fun CustomStepsTab() {
+//     var text by remember { mutableStateOf(TextFieldValue("")) }
+//     Row(
+//         modifier = Modifier.fillMaxWidth()){
+//         TextField(
+//             modifier = Modifier.padding(start= 32.dp),
+//             value = text,
+//             onValueChange = {
+//                 text = it
+//             },
+//             label = { Text(text = "Number of steps") },
+//             placeholder = { Text(text = "E.g. 10000") },
+//         )
+//     }
+// }
 
  @Composable
- fun CustomStepsTab() {
+ fun CustomStepsTab(onTabValueChanged: (Int) -> Unit) {
      var text by remember { mutableStateOf(TextFieldValue("")) }
-     Row(
-         modifier = Modifier.fillMaxWidth()){
+     Row(modifier = Modifier.fillMaxWidth()) {
          TextField(
-             modifier = Modifier.padding(start= 32.dp),
+             modifier = Modifier.padding(start = 32.dp),
              value = text,
              onValueChange = {
                  text = it
+                 onTabValueChanged(it.text.toIntOrNull() ?: 0)
              },
              label = { Text(text = "Number of steps") },
              placeholder = { Text(text = "E.g. 10000") },
          )
      }
-
-
  }
 
+
+
  @Composable
- fun ImaginativeGoalsTab() {
-     DropDownMenuImaginativeGoals()
+ fun ImaginativeGoalsTab(onTabValueChanged: (Int) -> Unit) {
+     DropDownMenuImaginativeGoals(onTabValueChanged)
  }
 
  @Composable
@@ -438,12 +523,11 @@ import com.example.group7.R
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun DropDownMenuImaginativeGoals() {
+ fun DropDownMenuImaginativeGoals(onTabValueChanged: (Int) -> Unit) {
      val context = LocalContext.current
-     val cityDestinations = arrayOf("The Shire To Mordor", "Around the world once", "Climb Mount Everest horizontally")
+     val cityDestinations = arrayOf(Pair("The Shire To Mordor", 56789), Pair("Around the world once", 80052472), Pair("Climb Mount Everest horizontally", 8564))
      var expanded by remember { mutableStateOf(false) }
      var selectedText by remember { mutableStateOf("") }
-
      Box(
          modifier = Modifier
              .fillMaxWidth()
@@ -463,7 +547,7 @@ import com.example.group7.R
              )
 
              val filteredOptions =
-                 cityDestinations.filter { it.contains(selectedText, ignoreCase = true) }
+                 cityDestinations.filter { it.first.contains(selectedText, ignoreCase = true) }
              if (filteredOptions.isNotEmpty()) {
                  ExposedDropdownMenu(
                      expanded = expanded,
@@ -473,10 +557,11 @@ import com.example.group7.R
                  ) {
                      filteredOptions.forEach { item ->
                          DropdownMenuItem(
-                             text = { Text(text = item) },
+                             text = { Text(text = item.first) },
                              onClick = {
-                                 selectedText = item
+                                 selectedText = item.first
                                  expanded = false
+                                 onTabValueChanged(item.second)
                              }
                          )
                      }
