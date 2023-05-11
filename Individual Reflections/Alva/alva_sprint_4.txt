@@ -1,0 +1,21 @@
+Sprint: 4
+Time spent: 18h 
+
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I feel like my understanding of the process on how to build an application is getting deeper and deeper every sprint
+and it would be so interesting to take that knowledge in to a “real” project sometime in the future. The processes of Scrum
+and agile is also getting clearer and I look forward to learn even more about that. 
+
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+This week I have been implementing a google maps API that can calculate the walking distance and number of steps between 
+two given cities. I have been working together with one other group member as well as alone to implement this feature. 
+I have also collaborated with one other group within our team to make sure that our features will work together.  
+
+
+Changes/improvements from last week's reflection?
+This sprint I worked on a feature that we were able to implement in the sprint and that gave a boost to me to see that the thing 
+I worked on was paying off. Even though it was a shorter week I felt like I could put in the needed hours and 
+	
+
