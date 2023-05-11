@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.group7.View.Dashboard
-import com.example.group7.View.StartScreen
+import com.example.group7.View.SplashScreen
 
 @Composable
 fun SetupNavGraph(
@@ -13,13 +13,13 @@ fun SetupNavGraph(
 ){
     NavHost(
         navController = navHostController,
-        startDestination = Screen.StartScreen.route
+        startDestination = Screen.Dashboard.route
     ){
-        composable(
-            Screen.StartScreen.route
+       /* composable(
+            Screen.SplashScreen.route
         ){
-            StartScreen(navHostController)
-        }
+            SplashScreen()
+        } */
         composable(
             Screen.Dashboard.route
         ){

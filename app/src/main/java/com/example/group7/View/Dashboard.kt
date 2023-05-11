@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import com.example.group7.R
+import com.example.group7.ViewModel.StepGoalViewModel
 import com.example.group7.ui.theme.AmbundiTheme
 
 
@@ -50,12 +51,20 @@ fun Dashboard(){
 @Composable
 fun DashboardContent(/*navController: NavController*/ ) {
     //val logo: Painter = painterResource(R.drawable.ambundi_logo)
+        val context = LocalContext.current
         var stepsGoal by remember { mutableStateOf(10000) }
         var sleepGoal by remember { mutableStateOf((8 * 60)) }
+        val stepgoalviewModel: StepGoalViewModel = StepGoalViewModel(context = context)
+        stepgoalviewModel.getStepGoal { stepGoal ->
+            stepsGoal = stepGoal }
         var sleepCount by remember { mutableStateOf((2 * 60)) }
         var stepCount by remember { mutableStateOf(0) }
         var progress by remember { mutableStateOf(0.2f) }
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+
+
+
 
 
     Scaffold(
