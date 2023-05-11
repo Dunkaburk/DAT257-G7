@@ -31,7 +31,7 @@ suspend fun apitest(): DistanceMatrixApiResponse = withContext(Dispatchers.IO) {
     val client = OkHttpClient()
     val city1 = "Göteborg"
     val city2 = "Köpenhamn"
-    val key = ""
+    val key = getapikey()
     val url = HttpUrl.Builder()
         .scheme("https")
         .host("maps.googleapis.com")
