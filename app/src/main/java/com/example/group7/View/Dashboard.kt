@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 
@@ -36,7 +37,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
+import com.example.group7.ViewModel.Screen
 import com.example.group7.ViewModel.StepGoalViewModel
 import com.example.group7.ui.theme.AmbundiTheme
 
@@ -44,13 +48,13 @@ import com.example.group7.ui.theme.AmbundiTheme
 @Composable
 @Preview
 fun Dashboard(){
-    DashboardContent()
+    DashboardContent(navController = rememberNavController())
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardContent(/*navController: NavController*/ ) {
-    //val logo: Painter = painterResource(R.drawable.ambundi_logo)
+fun DashboardContent(navController: NavController) {
+        val logo: Painter = painterResource(R.drawable.eologo)
         val context = LocalContext.current
         var stepsGoal by remember { mutableStateOf(10000) }
         var sleepGoal by remember { mutableStateOf((8 * 60)) }
@@ -61,11 +65,6 @@ fun DashboardContent(/*navController: NavController*/ ) {
         var stepCount by remember { mutableStateOf(0) }
         var progress by remember { mutableStateOf(0.2f) }
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
-
-
-
-
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -109,8 +108,8 @@ fun DashboardContent(/*navController: NavController*/ ) {
             ) {
 
                 //item { DailyGoalsCard() }
-                item { ProgressCard("Steps",progress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }) }
-                item { ProgressCard("Sleep",progress, { SleepProgress(sleepProgress = stepCount, sleepGoal = stepsGoal) }) }
+                item { ProgressCard("Steps",progress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
+                item { ProgressCard("Sleep",progress, { SleepProgress(sleepProgress = stepCount, sleepGoal = stepsGoal) }, navController) }
                 item { WaterIntakePanel()}
                 //item { ChooseGoalTypePanel()}
             }
@@ -183,12 +182,15 @@ fun WaterIntakePanel() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composable () -> Unit ) {
+fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composable () -> Unit , navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
-            .clickable { /* TODO Navigate to chosen screen */ },
+            .clickable {
+                //bara placeholder för att se så de funkar, nu kommer alla cards leda till stepspanel
+                navController.navigate(Screen.StepsPanel.route)
+            },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp),
         border = BorderStroke(1.dp, Color(0xFF000000)),
