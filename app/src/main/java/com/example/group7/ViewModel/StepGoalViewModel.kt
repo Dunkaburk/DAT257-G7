@@ -17,12 +17,12 @@ class StepGoalViewModel(context: Context) : ViewModel() {
     fun getStepGoal(onResult: (Int) -> Unit) {
          viewModelScope.launch {
              //Comment out this block if you need to for testing other things
-             /*   val apiResponse = apitest()
+            val apiResponse = apitest()
             val distanceMeter = apiResponse.rows[0].elements[0].distance.value
             val stepLength = 0.7
             val stepGoal = (distanceMeter/stepLength).toInt()
             onResult(stepGoal)
-            }  */
+
          }
     }
 
