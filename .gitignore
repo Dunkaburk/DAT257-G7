@@ -84,3 +84,4 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+app/src/main/java/com/example/group7/Model/apikey.kt
