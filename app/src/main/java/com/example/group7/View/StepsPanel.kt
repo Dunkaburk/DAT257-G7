@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.group7.R
+import com.example.group7.ViewModel.StepGoalViewModel
 
  @Preview
  @Composable
@@ -36,6 +37,7 @@ import com.example.group7.R
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
  fun StepsContent(/*navController: NavController*/) {
+     val context = LocalContext.current
      val logo: Painter = painterResource(R.drawable.eologo)
      var stepsGoal by remember { mutableStateOf(10000) }
      var stepCount by remember { mutableStateOf(1000) } // TODO get from pedometer
@@ -43,6 +45,7 @@ import com.example.group7.R
      var showDialog by remember { mutableStateOf(false) }
      var hasIndividualGoal by remember { mutableStateOf(false) } // TODO make getter and setter for this variable and set to false first time a user opens app and when goal is completed
      var goalProgress by remember { mutableStateOf(stepCount.toFloat()/stepsGoal.toFloat()) }
+     val stepGoalViewModel = StepGoalViewModel(context = context)
 
      val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
      Scaffold(
@@ -95,7 +98,7 @@ import com.example.group7.R
                          showDialog = false
                      })
              }
-             item { ChooseGoalPanel (onSaveClicked = { steps ->
+             item { ChooseGoalPanel (stepGoalViewModel, onSaveClicked = { steps ->
                  stepsGoal = steps
                  println("Steps goal updated: $stepsGoal")
                  hasIndividualGoal = true
@@ -105,49 +108,6 @@ import com.example.group7.R
          }
      }
  }
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
- fun GoalProgressCard() { // Unsure if we should scrap daily goals for now and replace it with chosen goal
-     Card(
-         modifier = Modifier
-             .fillMaxWidth()
-             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
-             .clickable { *//* TODO Navigate to chosen screen *//* },
-         elevation = CardDefaults.cardElevation(
-             defaultElevation = 10.dp),
-         border = BorderStroke(1.dp, Color(0xFF000000)),
-     )
-     {
-         Row(modifier = Modifier.fillMaxSize())
-         {
-             Text(text = "Daily", modifier = Modifier.padding(10.dp))
-             Divider(
-                 color = Color(0xFFFFFFFF),
-                 modifier = Modifier
-                     .fillMaxHeight()
-                     .width(2.dp)
-             )
-             Text(text = "1483", modifier = Modifier.padding(10.dp))
-             Icon(painter = painterResource(R.drawable.rectangle_23), contentDescription = "Steps foot",
-                 modifier = Modifier
-                     .size(28.dp)
-                     .defaultMinSize(minWidth = 24.dp, minHeight = 24.dp)
-                     .align(Alignment.CenterVertically)
-                     .padding(end = 8.dp)
-             )
-             Text(text = "10000 Steps", modifier = Modifier.padding(10.dp))
-             Spacer(modifier = Modifier.weight(1f))
-             Icon(painter = painterResource(R.drawable.footprint_24px), contentDescription = "Steps foot",
-                 modifier = Modifier
-                     .size(28.dp)
-                     .defaultMinSize(minWidth = 24.dp, minHeight = 24.dp)
-                     .align(Alignment.CenterVertically)
-                     .padding(end = 8.dp)
-             )
-         }
-     }
- }*/
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
@@ -264,60 +224,9 @@ import com.example.group7.R
      )
  }
 
-
-
-
-// @OptIn(ExperimentalMaterial3Api::class)
-// @Composable
-// fun ChooseGoalPanel(OnClickAction: () -> Unit){
-//     Card( modifier = Modifier
-//         .fillMaxWidth()
-//         .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
-//         elevation = CardDefaults.cardElevation(
-//             defaultElevation = 10.dp)){
-//         Text(
-//             text = "Choose the type of goal",
-//             textAlign = TextAlign.Center,
-//             style = MaterialTheme.typography.headlineSmall,
-//             modifier = Modifier.align(Alignment.CenterHorizontally)
-//         )
-//         var tabIndex by remember { mutableStateOf(0) }
-//
-//         val tabs = listOf("City to city", "Imaginative", "Custom")
-//
-//         Column(modifier = Modifier.fillMaxWidth()) {
-//             TabRow(selectedTabIndex = tabIndex) {
-//                 tabs.forEachIndexed { index, title ->
-//                     Tab(text = { Text(title) },
-//                         selected = tabIndex == index,
-//                         onClick = { tabIndex = index }
-//                     )
-//                 }
-//             }
-//             when (tabIndex) {
-//                 0 -> CityToCityTab()
-//                 1 -> ImaginativeGoalsTab()
-//                 2 -> CustomStepsTab()
-//             }
-//         }
-//         OutlinedButton(
-//             onClick = {
-//                       if (tabIndex == 2) {
-//
-//                       }/* TODO save current goal */
-//                    },
-//             modifier = Modifier
-//                 .padding(10.dp)
-//                 .align(Alignment.CenterHorizontally))
-//         {
-//             Text("Save goal", fontSize = 18.sp)
-//             //hasIndividualGoal = true
-//         }
-//     }
-// }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
+fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
     var steps by remember { mutableStateOf(0) }
 
     Card(
@@ -348,7 +257,7 @@ fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
                  }
              }
              when (tabIndex) {
-                 0 -> CityToCityTab()
+                 0 -> CityToCityTab(vm, onTabValueChanged = { value -> steps = value})
                  1 -> ImaginativeGoalsTab(onTabValueChanged = { value -> steps = value})
                  2 -> CustomStepsTab(onTabValueChanged = { value ->
                      steps = value
@@ -357,11 +266,7 @@ fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
          }
         OutlinedButton(
             onClick = {
-                if (tabIndex == 0) {
-                    throw NotImplementedError() // TODO Requires information from API
-                } else {
-                    onSaveClicked(steps)
-                }/* TODO save current goal */
+                onSaveClicked(steps)
             },
             modifier = Modifier
                 .padding(10.dp)
@@ -372,24 +277,6 @@ fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
         }
     }
 }
-
-
-// @Composable
-// fun CustomStepsTab() {
-//     var text by remember { mutableStateOf(TextFieldValue("")) }
-//     Row(
-//         modifier = Modifier.fillMaxWidth()){
-//         TextField(
-//             modifier = Modifier.padding(start= 32.dp),
-//             value = text,
-//             onValueChange = {
-//                 text = it
-//             },
-//             label = { Text(text = "Number of steps") },
-//             placeholder = { Text(text = "E.g. 10000") },
-//         )
-//     }
-// }
 
  @Composable
  fun CustomStepsTab(onTabValueChanged: (Int) -> Unit) {
@@ -416,14 +303,30 @@ fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
  }
 
  @Composable
- fun CityToCityTab() {
-     DropDownMenuCityStart()
-     DropDownMenuCityDestination()
+ fun CityToCityTab(vm: StepGoalViewModel, onTabValueChanged: (Int) -> Unit) {
+     var start by remember { mutableStateOf("") }
+     var end by remember { mutableStateOf("") }
+     DropDownMenuCityStart(onTabValueChanged = { value ->
+         start = value
+         println("Start updated: '$start'")
+         if (end != "") {
+             vm.getStepGoal(onTabValueChanged)
+         }
+     } )
+     DropDownMenuCityDestination(onTabValueChanged = { value ->
+         end = value
+         println("End updated: '$end'")
+         if (start != "") {
+             vm.getStepGoal(onTabValueChanged)
+         }
+     } )
+
  }
+
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun DropDownMenuCityStart() {
+ fun DropDownMenuCityStart(onTabValueChanged: (String) -> Unit) {
      val context = LocalContext.current
      val cityDestinations = arrayOf("Stockholm", "Copenhagen", "Helsinki", "London", "Paris")
      var expanded by remember { mutableStateOf(false) }
@@ -462,6 +365,7 @@ fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
                              onClick = {
                                  selectedText = item
                                  expanded = false
+                                 onTabValueChanged(item)
                              }
                          )
                      }
@@ -473,7 +377,7 @@ fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun DropDownMenuCityDestination() {
+ fun DropDownMenuCityDestination(onTabValueChanged: (String) -> Unit) {
      val context = LocalContext.current
      val cityDestinations = arrayOf("Stockholm", "Copenhagen", "Helsinki", "London", "Paris")
      var expanded by remember { mutableStateOf(false) }
@@ -512,6 +416,7 @@ fun ChooseGoalPanel(onSaveClicked: (Int) -> Unit) {
                              onClick = {
                                  selectedText = item
                                  expanded = false
+                                 onTabValueChanged(item)
                              }
                          )
                      }
