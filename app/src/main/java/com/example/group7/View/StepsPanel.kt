@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
 import com.example.group7.ViewModel.Screen
+import com.example.group7.ViewModel.StepGoalViewModel
 
  @Preview
  @Composable
@@ -39,13 +40,15 @@ import com.example.group7.ViewModel.Screen
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
  fun StepsContent(navController: NavController) {
+     val context = LocalContext.current
      val logo: Painter = painterResource(R.drawable.eologo)
      var stepsGoal by remember { mutableStateOf(10000) }
      var stepCount by remember { mutableStateOf(1000) } // TODO get from pedometer
      var progress by remember { mutableStateOf(0.2f) }
      var showDialog by remember { mutableStateOf(false) }
      var hasIndividualGoal by remember { mutableStateOf(false) } // TODO make getter and setter for this variable and set to false first time a user opens app and when goal is completed
-     var goalProgress by remember { mutableStateOf(((stepCount/stepsGoal).toFloat())) }
+     var goalProgress by remember { mutableStateOf(stepCount.toFloat()/stepsGoal.toFloat()) }
+     val stepGoalViewModel = StepGoalViewModel(context = context)
 
      val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
      Scaffold(
@@ -87,7 +90,7 @@ import com.example.group7.ViewModel.Screen
              contentPadding = innerPadding,
              verticalArrangement = Arrangement.spacedBy(8.dp)
          ) {
-             //item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
+//             item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
              if (hasIndividualGoal) item { IndividualGoalsCard( { showDialog = true }, goalProgress )}
              if (showDialog) item {
                  CustomGoalPopup(
@@ -98,8 +101,14 @@ import com.example.group7.ViewModel.Screen
                          showDialog = false
                      })
              }
-             item { ChooseGoalPanel({ showDialog = true }) }
-             item { BackButton(navController)}
+             item { ChooseGoalPanel (stepGoalViewModel, onSaveClicked = { steps ->
+                 stepsGoal = steps
+                 println("Steps goal updated: $stepsGoal")
+                 hasIndividualGoal = true
+                 goalProgress = stepCount.toFloat()/stepsGoal.toFloat()
+             })
+             }
+             item {BackButton(navController)}
          }
      }
  }
@@ -110,56 +119,13 @@ import com.example.group7.ViewModel.Screen
          onClick = {navController.navigate(Screen.Dashboard.route)},
          modifier = Modifier
              .padding(10.dp)
-            //align funkar inte här, pls fix nån som vet hur
-             //.align(Alignment.CenterHorizontally)
-             )
+         //align funkar inte här, pls fix nån som vet hur
+         //.align(Alignment.CenterHorizontally)
+     )
      {
          Text("Back", fontSize = 18.sp)
      }
  }
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
- fun GoalProgressCard() { // Unsure if we should scrap daily goals for now and replace it with chosen goal
-     Card(
-         modifier = Modifier
-             .fillMaxWidth()
-             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
-             .clickable { *//* TODO Navigate to chosen screen *//* },
-         elevation = CardDefaults.cardElevation(
-             defaultElevation = 10.dp),
-         border = BorderStroke(1.dp, Color(0xFF000000)),
-     )
-     {
-         Row(modifier = Modifier.fillMaxSize())
-         {
-             Text(text = "Daily", modifier = Modifier.padding(10.dp))
-             Divider(
-                 color = Color(0xFFFFFFFF),
-                 modifier = Modifier
-                     .fillMaxHeight()
-                     .width(2.dp)
-             )
-             Text(text = "1483", modifier = Modifier.padding(10.dp))
-             Icon(painter = painterResource(R.drawable.rectangle_23), contentDescription = "Steps foot",
-                 modifier = Modifier
-                     .size(28.dp)
-                     .defaultMinSize(minWidth = 24.dp, minHeight = 24.dp)
-                     .align(Alignment.CenterVertically)
-                     .padding(end = 8.dp)
-             )
-             Text(text = "10000 Steps", modifier = Modifier.padding(10.dp))
-             Spacer(modifier = Modifier.weight(1f))
-             Icon(painter = painterResource(R.drawable.footprint_24px), contentDescription = "Steps foot",
-                 modifier = Modifier
-                     .size(28.dp)
-                     .defaultMinSize(minWidth = 24.dp, minHeight = 24.dp)
-                     .align(Alignment.CenterVertically)
-                     .padding(end = 8.dp)
-             )
-         }
-     }
- }*/
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
@@ -228,7 +194,7 @@ import com.example.group7.ViewModel.Screen
 
                  Box(modifier = Modifier.align(Alignment.Center)) {
                      var goalPercentage = (goalProgress) * 100
-                     Text(text = "60% to Mordor", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodyLarge)
+                     Text(text = "$goalPercentage% of goal reached", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodyLarge)
                  }
              }
 
@@ -276,18 +242,20 @@ import com.example.group7.ViewModel.Screen
      )
  }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
+    var steps by remember { mutableStateOf(0) }
 
-
-
- @OptIn(ExperimentalMaterial3Api::class)
- @Composable
- fun ChooseGoalPanel(OnClickAction: () -> Unit){
-     Card( modifier = Modifier
-         .fillMaxWidth()
-         .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
-         elevation = CardDefaults.cardElevation(
-             defaultElevation = 10.dp)){
-         Text(
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Text(
              text = "Choose the type of goal",
              textAlign = TextAlign.Center,
              style = MaterialTheme.typography.headlineSmall,
@@ -307,56 +275,76 @@ import com.example.group7.ViewModel.Screen
                  }
              }
              when (tabIndex) {
-                 0 -> CityToCityTab()
-                 1 -> ImaginativeGoalsTab()
-                 2 -> CustomStepsTab()
+                 0 -> CityToCityTab(vm, onTabValueChanged = { value -> steps = value})
+                 1 -> ImaginativeGoalsTab(onTabValueChanged = { value -> steps = value})
+                 2 -> CustomStepsTab(onTabValueChanged = { value ->
+                     steps = value
+                 })
              }
          }
-         OutlinedButton(
-             onClick = {/* TODO save current goal */},
-             modifier = Modifier
-                 .padding(10.dp)
-                 .align(Alignment.CenterHorizontally))
-         {
-             Text("Save goal", fontSize = 18.sp)
-             //hasIndividualGoal = true
-         }
-     }
- }
+        OutlinedButton(
+            onClick = {
+                onSaveClicked(steps)
+            },
+            modifier = Modifier
+                .padding(10.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Text("Save goal", fontSize = 18.sp)
+            //hasIndividualGoal = true
+        }
+    }
+}
 
  @Composable
- fun CustomStepsTab() {
+ fun CustomStepsTab(onTabValueChanged: (Int) -> Unit) {
      var text by remember { mutableStateOf(TextFieldValue("")) }
-     Row(
-         modifier = Modifier.fillMaxWidth()){
+     Row(modifier = Modifier.fillMaxWidth()) {
          TextField(
-             modifier = Modifier.padding(start= 32.dp),
+             modifier = Modifier.padding(start = 32.dp),
              value = text,
              onValueChange = {
                  text = it
+                 onTabValueChanged(it.text.toIntOrNull() ?: 0)
              },
              label = { Text(text = "Number of steps") },
              placeholder = { Text(text = "E.g. 10000") },
          )
      }
+ }
 
 
+
+ @Composable
+ fun ImaginativeGoalsTab(onTabValueChanged: (Int) -> Unit) {
+     DropDownMenuImaginativeGoals(onTabValueChanged)
  }
 
  @Composable
- fun ImaginativeGoalsTab() {
-     DropDownMenuImaginativeGoals()
+ fun CityToCityTab(vm: StepGoalViewModel, onTabValueChanged: (Int) -> Unit) {
+     var start by remember { mutableStateOf("") }
+     var end by remember { mutableStateOf("") }
+     DropDownMenuCityStart(onTabValueChanged = { value ->
+         start = value
+         println("Start updated: '$start'")
+         if (end != "") {
+             vm.getStepGoal(onTabValueChanged)
+         }
+     } )
+     DropDownMenuCityDestination(onTabValueChanged = { value ->
+         end = value
+         println("End updated: '$end'")
+         if (start != "") {
+             vm.getStepGoal(onTabValueChanged)
+         }
+     } )
+
  }
 
- @Composable
- fun CityToCityTab() {
-     DropDownMenuCityStart()
-     DropDownMenuCityDestination()
- }
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun DropDownMenuCityStart() {
+ fun DropDownMenuCityStart(onTabValueChanged: (String) -> Unit) {
      val context = LocalContext.current
      val cityDestinations = arrayOf("Stockholm", "Copenhagen", "Helsinki", "London", "Paris")
      var expanded by remember { mutableStateOf(false) }
@@ -395,6 +383,7 @@ import com.example.group7.ViewModel.Screen
                              onClick = {
                                  selectedText = item
                                  expanded = false
+                                 onTabValueChanged(item)
                              }
                          )
                      }
@@ -406,7 +395,7 @@ import com.example.group7.ViewModel.Screen
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun DropDownMenuCityDestination() {
+ fun DropDownMenuCityDestination(onTabValueChanged: (String) -> Unit) {
      val context = LocalContext.current
      val cityDestinations = arrayOf("Stockholm", "Copenhagen", "Helsinki", "London", "Paris")
      var expanded by remember { mutableStateOf(false) }
@@ -445,6 +434,7 @@ import com.example.group7.ViewModel.Screen
                              onClick = {
                                  selectedText = item
                                  expanded = false
+                                 onTabValueChanged(item)
                              }
                          )
                      }
@@ -456,12 +446,11 @@ import com.example.group7.ViewModel.Screen
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun DropDownMenuImaginativeGoals() {
+ fun DropDownMenuImaginativeGoals(onTabValueChanged: (Int) -> Unit) {
      val context = LocalContext.current
-     val cityDestinations = arrayOf("The Shire To Mordor", "Around the world once", "Climb Mount Everest horizontally")
+     val cityDestinations = arrayOf(Pair("The Shire To Mordor", 56789), Pair("Around the world once", 80052472), Pair("Climb Mount Everest horizontally", 8564))
      var expanded by remember { mutableStateOf(false) }
      var selectedText by remember { mutableStateOf("") }
-
      Box(
          modifier = Modifier
              .fillMaxWidth()
@@ -481,7 +470,7 @@ import com.example.group7.ViewModel.Screen
              )
 
              val filteredOptions =
-                 cityDestinations.filter { it.contains(selectedText, ignoreCase = true) }
+                 cityDestinations.filter { it.first.contains(selectedText, ignoreCase = true) }
              if (filteredOptions.isNotEmpty()) {
                  ExposedDropdownMenu(
                      expanded = expanded,
@@ -491,10 +480,11 @@ import com.example.group7.ViewModel.Screen
                  ) {
                      filteredOptions.forEach { item ->
                          DropdownMenuItem(
-                             text = { Text(text = item) },
+                             text = { Text(text = item.first) },
                              onClick = {
-                                 selectedText = item
+                                 selectedText = item.first
                                  expanded = false
+                                 onTabValueChanged(item.second)
                              }
                          )
                      }
