@@ -1,0 +1,15 @@
+Sprint: 3
+Time spent: 12 hours
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+    - I would really like to understand the step sensors right now..
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+    - We have figured out all the permissions and when we test the code on an emulator it works as intended. However, when we connect an actual phone, the step counter still says the
+    phone has walked 0 steps. We tried re-writing the code in another way, and i even tried following a guide on how to import the steps data. It doesnt work anyway.. Even Jonathan
+    who has some earlier experience with sensor cant seem to figure out what i have done wrong. So i dont feel like i have contributed anything really, since this friday, we are still
+    at the same place as we were this monday.
+
+Changes/improvements from last week's reflection?
+    - The teamwork still works great, and next week we will switch the programing pairs a bit, so we get to work with other people as well. The other teammates have been great support
+    when i feel like giving up on the step counter haha <3
