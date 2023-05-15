@@ -1,0 +1,17 @@
+Week: 4
+
+Time spent: 20-21 hrs
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+
+I would like to understand Git better, because we have had a few problems with merge conflicts and branches not working as expected, which slowed a few of us down.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+
+Wanda and I made it possible to choose different types of goals from the StepPanel page, the finishing touches of connecting the pages can be done when the 
+NavController is up and working properly. Being available for my team members and offering help when they ask goes a long way, so I will continue to do that 
+in order to help my team do better next sprint.
+
+Changes/improvements from last week's reflection?
+
+We switched partners this week, and it worked great! New perspectives are always refreshing.
