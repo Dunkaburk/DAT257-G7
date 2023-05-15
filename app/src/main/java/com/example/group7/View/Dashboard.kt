@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
+import com.example.group7.Model.ReminderNotification
 import com.example.group7.R
 import com.example.group7.ViewModel.StepGoalViewModel
 import com.example.group7.ui.theme.AmbundiTheme
@@ -50,7 +52,7 @@ fun Dashboard(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardContent(/*navController: NavController*/ ) {
-    //val logo: Painter = painterResource(R.drawable.ambundi_logo)
+        val logo: Painter = painterResource(R.drawable.eologo)
         val context = LocalContext.current
         var stepsGoal by remember { mutableStateOf(10000) }
         var sleepGoal by remember { mutableStateOf((8 * 60)) }
@@ -61,11 +63,6 @@ fun DashboardContent(/*navController: NavController*/ ) {
         var stepCount by remember { mutableStateOf(0) }
         var progress by remember { mutableStateOf(0.2f) }
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
-
-
-
-
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -82,7 +79,7 @@ fun DashboardContent(/*navController: NavController*/ ) {
                 navigationIcon = {
                     IconButton(onClick = { /* Send me to Dashboard */ }) {
                         Image(
-                            painter = painterResource(id = R.drawable.eologo),
+                            painter = logo,
                             contentDescription = null // decorative element
                         )
                     }
@@ -112,7 +109,6 @@ fun DashboardContent(/*navController: NavController*/ ) {
                 item { ProgressCard("Steps",progress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }) }
                 item { ProgressCard("Sleep",progress, { SleepProgress(sleepProgress = stepCount, sleepGoal = stepsGoal) }) }
                 item { WaterIntakePanel()}
-                //item { ChooseGoalTypePanel()}
             }
         }
     )
@@ -124,7 +120,7 @@ fun WaterIntakePanel() {
     val paddingModifier = Modifier.padding(12.dp)
     var waterCount by remember { mutableStateOf(0) }
     Card(
-        //border = BorderStroke(5.dp, MaterialTheme.colorScheme.secondary),
+        border = BorderStroke(1.dp, Color(0xFF000000)),
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
@@ -390,7 +386,7 @@ fun SleepProgress(sleepProgress : Int, sleepGoal : Int) {
     var remainingHours by remember { mutableStateOf(remainingSleep / 60) }
     var remainingMinutes by remember { mutableStateOf(remainingSleep % 60) }
 
-    Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
+    Row(modifier = Modifier.fillMaxSize().padding(5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
     {
         Text(
             buildAnnotatedString {
@@ -415,6 +411,7 @@ fun SleepProgress(sleepProgress : Int, sleepGoal : Int) {
 
     }
 }
+
 
 
 

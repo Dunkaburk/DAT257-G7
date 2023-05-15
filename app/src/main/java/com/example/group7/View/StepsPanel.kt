@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
@@ -54,18 +55,16 @@ import com.example.group7.ViewModel.StepGoalViewModel
              SmallTopAppBar(
                  title = {
                      Text(
-                         "Ambundi",
+                         "Steps",
                          maxLines = 1,
                          overflow = TextOverflow.Ellipsis,
                          letterSpacing = 2.sp
                      )
                  },
                  navigationIcon = {
+
                      IconButton(onClick = { /* Send me to Dashboard */ }) {
-                         Image(
-                             painter = painterResource(id = R.drawable.eologo),
-                             contentDescription = null // decorative element
-                         )
+                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                      }
                  },
                  actions = {
@@ -243,6 +242,7 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
              style = MaterialTheme.typography.headlineSmall,
              modifier = Modifier.align(Alignment.CenterHorizontally)
          )
+
          var tabIndex by remember { mutableStateOf(0) }
 
          val tabs = listOf("City to city", "Imaginative", "Custom")
@@ -293,9 +293,9 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
              placeholder = { Text(text = "E.g. 10000") },
          )
      }
+
+
  }
-
-
 
  @Composable
  fun ImaginativeGoalsTab(onTabValueChanged: (Int) -> Unit) {
@@ -322,7 +322,6 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
      } )
 
  }
-
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
