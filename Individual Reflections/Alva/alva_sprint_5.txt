@@ -1,0 +1,16 @@
+Sprint: 5
+Time spent: 20h 
+
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+I feel like my understanding of working on a project with a lot of member has grown a lot. I would love to learn how
+it can work in an even bigger project. I also would like to learn more about building and developing an app.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+This sprint my main focus has been on UI updates on the dashboard on our app. I have also helped and informed the 
+other team members about how the google maps API works and how to use it. 
+
+Changes/improvements from last week's reflection?
+This week was exciting to see that the app is starting to come together. It was also interesting to switch 
+programming partners and hear more about what the others had learn and done during the project. 
+	
