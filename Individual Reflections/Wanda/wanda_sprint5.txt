@@ -1,0 +1,14 @@
+Sprint: 5
+
+Time spent:
+25h
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+Like last week, I still want to learn how to better handle git problems. I would also like to get more confident in Kotlin coding.
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+I have gotten a bit better at Kotlin, which has helped tremendously. I have tried to help Alva with some git struggles, which had mixed results. We managed to fix some problems, but also found new ones. I managed to put a lot more time into our project this week, partly because of less work load in my other course. I implemented what I believe is everything we needed to be able to save the currently chosen goal during the session. Hopefully it will go smoothly with connecting to the functionality to save such data between sessions.
+I can further help my team do better by trying to keep up with the planning of the other course work so that it doesn't have to overlap what days I am able to work on each course.
+
+Changes/improvements from last week's reflection?
+Been able to plan my work so that I have been able to put more time into the project. Gotten (atleast a little bit) better understanding on how to handle git when it comes to rebase, merge etc. Since we've managed to merge more into main, I've had an easier time to try and understand our code as a whole a lot better, which has been a struggle I haven't thought of much until this past week.
