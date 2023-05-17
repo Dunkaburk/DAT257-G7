@@ -54,7 +54,7 @@ fun DashboardContent(/*navController: NavController*/ ) {
         val context = LocalContext.current
         var stepsGoal by remember { mutableStateOf(10000) }
         var sleepGoal by remember { mutableStateOf((8 * 60)) }
-        val stepgoalviewModel: StepGoalViewModel = StepGoalViewModel(context = context)
+        val stepgoalviewModel = StepGoalViewModel(context = context)
         stepgoalviewModel.getStepGoal { stepGoal ->
             stepsGoal = stepGoal }
         var sleepCount by remember { mutableStateOf((2 * 60)) }

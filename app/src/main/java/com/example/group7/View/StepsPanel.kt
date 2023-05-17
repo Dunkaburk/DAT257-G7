@@ -308,6 +308,7 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
      var end by remember { mutableStateOf("") }
      DropDownMenuCityStart(onTabValueChanged = { value ->
          start = value
+         vm.setCityStart(value)
          println("Start updated: '$start'")
          if (end != "") {
              vm.getStepGoal(onTabValueChanged)
@@ -315,6 +316,7 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
      } )
      DropDownMenuCityDestination(onTabValueChanged = { value ->
          end = value
+         vm.setCityEnd(value)
          println("End updated: '$end'")
          if (start != "") {
              vm.getStepGoal(onTabValueChanged)
