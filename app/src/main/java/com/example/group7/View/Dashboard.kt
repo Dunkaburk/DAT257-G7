@@ -127,7 +127,7 @@ fun WaterIntakePanel() {
     val paddingModifier = Modifier.padding(12.dp)
     var waterCount by remember { mutableStateOf(0) }
     Card(
-        //border = BorderStroke(5.dp, MaterialTheme.colorScheme.secondary),
+        border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.secondary),
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
@@ -194,7 +194,7 @@ fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composab
             .clickable { /* TODO Navigate to chosen screen */ },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp),
-        border = BorderStroke(1.dp, Color(0xFF000000)),
+        border = BorderStroke(0.5.dp, Color(0xFF000000)),
     ) {
         Row(modifier = Modifier.height(100.dp), verticalAlignment = Alignment.CenterVertically) {
             Row(
