@@ -26,18 +26,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
+import com.example.group7.ViewModel.Screen
 import com.example.group7.ViewModel.StepGoalViewModel
 
  @Preview
  @Composable
- fun StepsView(/*navController: NavController*/) {
-     StepsContent(/*navController*/)
+ fun StepsView() {
+     StepsContent(navController = rememberNavController())
  }
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun StepsContent(/*navController: NavController*/) {
+ fun StepsContent(navController: NavController) {
      val context = LocalContext.current
      val logo: Painter = painterResource(R.drawable.eologo)
      var stepsGoal by remember { mutableStateOf(10000) }
@@ -62,8 +65,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
                      )
                  },
                  navigationIcon = {
-
-                     IconButton(onClick = { /* Send me to Dashboard */ }) {
+                     IconButton(onClick = {navController.navigate(Screen.Dashboard.route)}) {
                          Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                      }
                  },
@@ -86,7 +88,6 @@ import com.example.group7.ViewModel.StepGoalViewModel
              contentPadding = innerPadding,
              verticalArrangement = Arrangement.spacedBy(8.dp)
          ) {
-//             item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
              if (hasIndividualGoal) item { IndividualGoalsCard( { showDialog = true }, goalProgress )}
              if (showDialog) item {
                  CustomGoalPopup(
@@ -242,7 +243,6 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
              style = MaterialTheme.typography.headlineSmall,
              modifier = Modifier.align(Alignment.CenterHorizontally)
          )
-
          var tabIndex by remember { mutableStateOf(0) }
 
          val tabs = listOf("City to city", "Imaginative", "Custom")
@@ -293,9 +293,9 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
              placeholder = { Text(text = "E.g. 10000") },
          )
      }
-
-
  }
+
+
 
  @Composable
  fun ImaginativeGoalsTab(onTabValueChanged: (Int) -> Unit) {
