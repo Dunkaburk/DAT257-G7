@@ -25,13 +25,15 @@ class StepGoalViewModel(context: Context) : ViewModel() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     fun getStepGoal(onResult: (Int) -> Unit) {
+
         viewModelScope.launch {
             val apiResponse = apitest(city1, city2)
             val distanceMeter = apiResponse.rows[0].elements[0].distance.value
             val stepLength = 0.7
             val stepGoal = (distanceMeter / stepLength).toInt()
             onResult(stepGoal)
-        }
+
+         }
     }
 
 

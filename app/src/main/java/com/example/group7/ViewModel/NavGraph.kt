@@ -4,15 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.group7.View.Dashboard
-import com.example.group7.View.SplashScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.group7.View.*
 
 @Composable
 fun SetupNavGraph(
-    navHostController: NavHostController
+    navController: NavHostController
 ){
     NavHost(
-        navController = navHostController,
+        navController = navController,
         startDestination = Screen.Dashboard.route
     ){
        /* composable(
@@ -23,7 +23,12 @@ fun SetupNavGraph(
         composable(
             Screen.Dashboard.route
         ){
-            Dashboard()
+            DashboardContent(navController = navController)
+        }
+        composable(
+            Screen.StepsPanel.route
+        ){
+            StepsContent(navController = navController)
         }
     }
 }

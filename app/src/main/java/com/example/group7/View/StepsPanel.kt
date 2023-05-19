@@ -25,18 +25,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
+import com.example.group7.ViewModel.Screen
 import com.example.group7.ViewModel.StepGoalViewModel
 
  @Preview
  @Composable
- fun StepsView(/*navController: NavController*/) {
-     StepsContent(/*navController*/)
+ fun StepsView() {
+     StepsContent(navController = rememberNavController())
  }
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
- fun StepsContent(/*navController: NavController*/) {
+ fun StepsContent(navController: NavController) {
      val context = LocalContext.current
      val logo: Painter = painterResource(R.drawable.eologo)
      var stepsGoal by remember { mutableStateOf(10000) }
@@ -61,7 +64,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
                      )
                  },
                  navigationIcon = {
-                     IconButton(onClick = { /* Send me to Dashboard */ }) {
+                     IconButton(onClick = {navController.navigate(Screen.Dashboard.route)}) {
                          Image(
                              painter = painterResource(id = R.drawable.eologo),
                              contentDescription = null // decorative element
@@ -105,7 +108,22 @@ import com.example.group7.ViewModel.StepGoalViewModel
                  goalProgress = stepCount.toFloat()/stepsGoal.toFloat()
              })
              }
+             item {BackButton(navController)}
          }
+     }
+ }
+
+ @Composable
+ fun BackButton(navController: NavController){
+     OutlinedButton(
+         onClick = {navController.navigate(Screen.Dashboard.route)},
+         modifier = Modifier
+             .padding(10.dp)
+         //align funkar inte här, pls fix nån som vet hur
+         //.align(Alignment.CenterHorizontally)
+     )
+     {
+         Text("Back", fontSize = 18.sp)
      }
  }
 
