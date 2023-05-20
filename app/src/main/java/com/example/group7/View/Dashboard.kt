@@ -113,7 +113,13 @@ fun DashboardContent(navController: NavController) {
             ) {
 
                 //item { DailyGoalsCard() }
-                item { ProgressCard("Steps",stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
+                if(stepgoalviewModel.checkStepGoalReached(stepsGoal,stepCount)){
+                    item { GoalReachedCard("Step goal reached!", 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
+                } else {
+                    item { ProgressCard("Steps",stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
+                }
+                //for testing
+                //item { GoalReachedCard("Step goal reached!", 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
                 item { ProgressCard("Sleep",sleepProgress, { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) }, navController ) }
                 item { WaterIntakePanel()}
                 //item { ChooseGoalTypePanel()}
@@ -254,6 +260,76 @@ fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composab
         }
 
     }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GoalReachedCard(title : String, progressPercentage : Float, Progress: @Composable () -> Unit , navController: NavController) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
+            .clickable {
+                //bara placeholder för att se så de funkar, nu kommer alla cards leda till stepspanel
+                navController.navigate(Screen.StepsPanel.route)
+            },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp),
+        border = BorderStroke(3.dp, Color(0xFF000000)),
+    ) {
+        Row(modifier = Modifier.height(150.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .fillMaxHeight()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = title,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        textAlign = TextAlign.Left,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.W900
+                    )
+                    Progress()
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(end = 36.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.82f)
+                        .padding(end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center)
+                {
+                    Text(text = "Choose new goal?", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(20.dp))
+                    CustomLinearProgressBar(InitProgress = progressPercentage)
+                }
+                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Say what", modifier = Modifier
+                    .size(24.dp)
+                    .padding(start = 5.dp))
+
+                // Progressbar() TODO make progressbar
+            }
+
+        }
+
+    }
+
+}
 
 /*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
