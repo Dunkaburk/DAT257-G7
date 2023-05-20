@@ -27,10 +27,10 @@ data class Distance(
     val value: Int
 )
 
-suspend fun apitest(): DistanceMatrixApiResponse = withContext(Dispatchers.IO) {
+suspend fun apitest(city1: String, city2: String): DistanceMatrixApiResponse = withContext(Dispatchers.IO) {
     val client = OkHttpClient()
-    val city1 = "Göteborg"
-    val city2 = "Köpenhamn"
+    //val city1 = "Göteborg"
+    //val city2 = "Köpenhamn"
     val key = getapikey()
     val url = HttpUrl.Builder()
         .scheme("https")

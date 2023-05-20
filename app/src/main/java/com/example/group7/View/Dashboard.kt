@@ -57,17 +57,19 @@ fun Dashboard(){
 fun DashboardContent(navController: NavController) {
         val logo: Painter = painterResource(R.drawable.eologo)
         val context = LocalContext.current
-        var stepsGoal by remember { mutableStateOf(397302) }
+
+        var stepsGoal by remember { mutableStateOf(0) }
         var sleepGoal by remember { mutableStateOf(8*60) }
         val stepgoalviewModel = StepGoalViewModel(context = context)
         stepgoalviewModel.getStepGoal {
                 stepGoal -> stepsGoal = stepGoal
         }
         var sleepCount by remember { mutableStateOf(2*60) }
-        var stepCount by remember { mutableStateOf(20000) }
+        var stepCount by remember { mutableStateOf(0) }
         println(stepsGoal)
         var stepProgress by remember { mutableStateOf(stepCount/stepsGoal.toFloat()) }
         var sleepProgress by remember { mutableStateOf(sleepCount/sleepGoal.toFloat()) }
+
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
 
