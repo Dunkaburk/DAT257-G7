@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.group7.View.*
 
 @Composable
@@ -29,6 +28,11 @@ fun SetupNavGraph(
             Screen.StepsPanel.route
         ){
             StepsContent(navController = navController)
+        }
+        composable(
+            Screen.WaterPanel.route
+        ){
+            WaterContent(navController = navController)
         }
     }
 }

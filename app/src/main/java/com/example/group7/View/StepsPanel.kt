@@ -1,18 +1,19 @@
  package com.example.group7.View
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -57,7 +58,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
              SmallTopAppBar(
                  title = {
                      Text(
-                         "Ambundi",
+                         "Steps",
                          maxLines = 1,
                          overflow = TextOverflow.Ellipsis,
                          letterSpacing = 2.sp
@@ -65,10 +66,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
                  },
                  navigationIcon = {
                      IconButton(onClick = {navController.navigate(Screen.Dashboard.route)}) {
-                         Image(
-                             painter = painterResource(id = R.drawable.eologo),
-                             contentDescription = null // decorative element
-                         )
+                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                      }
                  },
                  actions = {
@@ -90,7 +88,6 @@ import com.example.group7.ViewModel.StepGoalViewModel
              contentPadding = innerPadding,
              verticalArrangement = Arrangement.spacedBy(8.dp)
          ) {
-//             item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
              if (hasIndividualGoal) item { IndividualGoalsCard( { showDialog = true }, goalProgress )}
              if (showDialog) item {
                  CustomGoalPopup(
@@ -108,22 +105,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
                  goalProgress = stepCount.toFloat()/stepsGoal.toFloat()
              })
              }
-             item {BackButton(navController)}
          }
-     }
- }
-
- @Composable
- fun BackButton(navController: NavController){
-     OutlinedButton(
-         onClick = {navController.navigate(Screen.Dashboard.route)},
-         modifier = Modifier
-             .padding(10.dp)
-         //align funkar inte här, pls fix nån som vet hur
-         //.align(Alignment.CenterHorizontally)
-     )
-     {
-         Text("Back", fontSize = 18.sp)
      }
  }
 
@@ -131,6 +113,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
  @Composable
  fun IndividualGoalsCard(optionsAction: () -> Unit, goalProgress: Float) {
      Card(
+         border = BorderStroke(1.dp, Color(0xFF000000)),
          modifier = Modifier
              .fillMaxWidth()
              .padding(16.dp),
@@ -248,6 +231,7 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
     var steps by remember { mutableStateOf(0) }
 
     Card(
+        border = BorderStroke(1.dp, Color(0xFF000000)),
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
@@ -342,7 +326,6 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
      } )
 
  }
-
 
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
