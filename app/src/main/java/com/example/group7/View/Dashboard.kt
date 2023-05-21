@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -111,12 +112,12 @@ fun DashboardContent(navController: NavController) {
                 //item { DailyGoalsCard() }
                 if(stepgoalviewModel.checkStepGoalReached(stepsGoal,stepCount)){
                     //only shown if goal has been reached, therefore input "fake" numbers to show 100% completion and x/x steps taken etc
-                    item { GoalReachedCard("Step goal reached!",stepIcon, 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
+                    item { GoalReachedCard("Step goal reached!", 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
                 } else {
                     item { ProgressCard("Steps",stepIcon,stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
                 }
                 //for testing
-                //item { GoalReachedCard("Step goal reached!",stepIcon, 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
+                //item { GoalReachedCard("Step goal reached!", 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
                 item { ProgressCard("Sleep",sleepIcon,sleepProgress, { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) }, navController ) }
                 item { WaterIntakePanel(navController)}
                 //item { ChooseGoalTypePanel()}
