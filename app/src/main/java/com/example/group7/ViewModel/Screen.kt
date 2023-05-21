@@ -6,5 +6,7 @@ sealed class Screen(val route: String) {
 
     object StepsPanel: Screen(route = "stepspanel_screen")
 
+    object WaterPanel: Screen(route = "waterpanel_screen")
+
 
 }

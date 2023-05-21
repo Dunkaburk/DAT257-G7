@@ -2,48 +2,40 @@ package com.example.group7.View
 
 
 //import androidx.navigation.NavController
-import androidx.compose.foundation.BorderStroke
+
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.group7.Model.ReminderNotification
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
 import com.example.group7.ViewModel.Screen
 import com.example.group7.ViewModel.StepGoalViewModel
-import com.example.group7.ui.theme.AmbundiTheme
 
 
 @Composable
@@ -56,6 +48,9 @@ fun Dashboard(){
 @Composable
 fun DashboardContent(navController: NavController) {
         val logo: Painter = painterResource(R.drawable.eologo)
+        val stepIcon : Painter = painterResource(R.drawable.footprint_24px)
+        val sleepIcon : Painter = painterResource(R.drawable.baseline_bedtime_24)
+
         val context = LocalContext.current
 
         var stepsGoal by remember { mutableStateOf(0) }
@@ -72,18 +67,13 @@ fun DashboardContent(navController: NavController) {
 
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-
-
-
-
-
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SmallTopAppBar(
                 title = {
                     Text(
-                        "Ambundi",
+                        "EO",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         letterSpacing = 2.sp
@@ -117,12 +107,9 @@ fun DashboardContent(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
             ) {
-
-                //item { DailyGoalsCard() }
-                item { ProgressCard("Steps",stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
-                item { ProgressCard("Sleep",sleepProgress, { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) }, navController ) }
-                item { WaterIntakePanel()}
-                //item { ChooseGoalTypePanel()}
+                item { ProgressCard("Steps", stepIcon, stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
+                item { ProgressCard("Sleep", sleepIcon, sleepProgress, { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) }, navController ) }
+                item { WaterIntakePanel(navController)}
             }
         }
     )
@@ -130,7 +117,7 @@ fun DashboardContent(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WaterIntakePanel() {
+fun WaterIntakePanel(navController: NavController) {
     val paddingModifier = Modifier.padding(12.dp)
     var waterCount by remember { mutableStateOf(0) }
     Card(
@@ -138,7 +125,7 @@ fun WaterIntakePanel() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
-            .clickable { /* TODO Navigate to chosen screen */ },
+            .clickable { navController.navigate(Screen.WaterPanel.route) },
         elevation = CardDefaults.cardElevation(
                 defaultElevation = 10.dp)
     ) {
@@ -179,11 +166,11 @@ fun WaterIntakePanel() {
                 ) {
                     Text(text = "+", fontSize = 28.sp)
                 }
-                Icon(
+                Image(
                     modifier = Modifier
                         .size(24.dp)
                         .padding(start = 4.dp),
-                    imageVector = Icons.Filled.Delete, // TODO INSERT WATER ICON
+                    painter = painterResource(R.drawable.water_full_48px), // TODO INSERT WATER ICON
                     contentDescription = "Glass of water"
                 )
             }
@@ -193,14 +180,15 @@ fun WaterIntakePanel() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composable () -> Unit , navController: NavController) {
+fun ProgressCard(title : String, icon : Painter, progressPercentage : Float, Progress: @Composable () -> Unit , navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
             .clickable {
-                //bara placeholder för att se så de funkar, nu kommer alla cards leda till stepspanel
-                navController.navigate(Screen.StepsPanel.route)
+                if (title == "Steps") {
+                    navController.navigate(Screen.StepsPanel.route)
+                }
             },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp),
@@ -248,73 +236,20 @@ fun ProgressCard(title : String, progressPercentage : Float, Progress: @Composab
                     Text(text = (progressPercentage*100).toInt().toString()+"%", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp))
                     CustomLinearProgressBar(InitProgress = progressPercentage)
                 }
-                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Say what", modifier = Modifier
-                    .size(24.dp)
-                    .padding(start = 5.dp))
-
-                // Progressbar() TODO make progressbar
-            }
-
-            }
-
-        }
-
-    }
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DailyGoalsCard(){
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
-            .clickable { *//* TODO Navigate to chosen screen *//* },
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp),
-        border = BorderStroke(1.dp, Color(0xFF000000)),
-    )
-    {
-        Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
-        {
-            Text(text = "Daily remaining Goals", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp).align(Alignment.CenterVertically))
-        }
-        Divider(color = Color(0xFF000000), thickness = 2.dp, modifier = Modifier.fillMaxWidth(0.8f))
-        *//*Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
-        {
-            Text(
-                buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color(0xFF3B7CD9),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    ) {
-                        append("DRINK")
-                    }
-                }
-            )
-            Box(
-                modifier = Modifier
-                    .background(shape = RoundedCornerShape(16.dp), color = Color(0xFF000000))
-                    .padding(16.dp)
-            ) {
-                Text(
-                    "2",
-                    fontSize = 16.sp
+                Image(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(start = 4.dp),
+                    painter = icon,
+                    contentDescription = "Steps"
                 )
             }
-            //val logo: Painter = painterResource(R.drawable.ambundi_logo)
-            Text(text = "GLASSES", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp))
-            Icon(painter = painterResource(R.drawable.ic_launcher_background), contentDescription = "Botuh of watuh", modifier = Modifier.size(28.dp).align(Alignment.CenterVertically))
-        }*//*
 
+            }
 
+        }
 
     }
-}*/
-
-
 
 @Composable
 private fun CustomLinearProgressBar(InitProgress: Float){
@@ -403,7 +338,9 @@ fun SleepProgress(sleepProgress : Int, sleepGoal : Int) {
     var remainingHours by remember { mutableStateOf(remainingSleep / 60) }
     var remainingMinutes by remember { mutableStateOf(remainingSleep % 60) }
 
-    Row(modifier = Modifier.fillMaxSize().padding(5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
+    Row(modifier = Modifier
+        .fillMaxSize()
+        .padding(5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
     {
         Text(
             buildAnnotatedString {
@@ -428,7 +365,6 @@ fun SleepProgress(sleepProgress : Int, sleepGoal : Int) {
 
     }
 }
-
 
 
 

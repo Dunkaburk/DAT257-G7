@@ -1,5 +1,6 @@
 package com.example.group7.View
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -21,22 +23,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
+import com.example.group7.ViewModel.Screen
 
 @Preview
 @Composable
-fun WaterView(/*navController: NavController*/) {
-    WaterContent(/*navController*/)
+fun WaterView() {
+    WaterContent(navController = rememberNavController())
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WaterContent(/*navController: NavController*/){
+fun WaterContent(navController: NavController) {
     val logo: Painter = painterResource(R.drawable.eologo)
     var waterGoal by remember { mutableStateOf(2000.toFloat()) } // recommended 2000 ml
     var waterCount by remember { mutableStateOf(400.toFloat()) } // TODO get from counter
     var hasIndividualGoal by remember { mutableStateOf(false) }
-    var goalProgress by remember { mutableStateOf((waterCount/waterGoal)) }
+    var goalProgress by remember { mutableStateOf((waterCount / waterGoal)) }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
@@ -52,7 +57,7 @@ fun WaterContent(/*navController: NavController*/){
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* Back to Dashboard */ }) {
+                    IconButton(onClick = { navController.navigate(Screen.Dashboard.route) }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -75,9 +80,15 @@ fun WaterContent(/*navController: NavController*/){
             contentPadding = innerPadding,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if (hasIndividualGoal) item { WaterGoalCard(
-                goalProgress = goalProgress)}
-            else {item { ChooseWaterGoalPanel() }}
+            if (hasIndividualGoal) item {
+                WaterGoalCard(
+                    goalProgress = goalProgress
+                )
+            }
+            else {
+                item { ChooseWaterGoalPanel() }
+            }
+            item { InfoCard() }
         }
     }
 }
@@ -85,11 +96,15 @@ fun WaterContent(/*navController: NavController*/){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseWaterGoalPanel() {
-    Card( modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
+    Card(
+        border = BorderStroke(1.dp, Color(0xFF000000)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp)){
+            defaultElevation = 10.dp
+        )
+    ) {
         Text(
             text = "Choose the type of goal",
             textAlign = TextAlign.Center,
@@ -115,10 +130,11 @@ fun ChooseWaterGoalPanel() {
             }
         }
         OutlinedButton(
-            onClick = {/* TODO save current goal */},
+            onClick = {/* TODO save current goal */ },
             modifier = Modifier
                 .padding(10.dp)
-                .align(Alignment.CenterHorizontally))
+                .align(Alignment.CenterHorizontally)
+        )
         {
             Text("Save goal", fontSize = 18.sp)
             //hasIndividualGoal = true
@@ -130,9 +146,10 @@ fun ChooseWaterGoalPanel() {
 fun CustomWaterGoalTab() {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     Row(
-        modifier = Modifier.fillMaxWidth()){
+        modifier = Modifier.fillMaxWidth()
+    ) {
         TextField(
-            modifier = Modifier.padding(start= 32.dp),
+            modifier = Modifier.padding(start = 32.dp),
             value = text,
             onValueChange = {
                 text = it
@@ -215,7 +232,11 @@ fun WaterGoalCard(goalProgress: Float) {
 
                 Box(modifier = Modifier.align(Alignment.Center)) {
                     var goalPercentage = (goalProgress) * 100
-                    Text(text = "$goalPercentage% to Completion", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = "$goalPercentage% to Completion",
+                        modifier = Modifier.align(Alignment.Center),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
             }
 
@@ -227,7 +248,8 @@ fun WaterGoalCard(goalProgress: Float) {
 @Composable
 fun DropDownMenuImaginativeWaterGoals() {
     val context = LocalContext.current
-    val cityDestinations = arrayOf("Drink a bathtub", "Around the world once", "Climb Mount Everest horizontally")
+    val cityDestinations =
+        arrayOf("Drink a bathtub", "Consume Lake Aiso", "Drink a geyser eruption from Old Faithful in Yellowstone National Park")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
@@ -267,6 +289,45 @@ fun DropDownMenuImaginativeWaterGoals() {
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InfoCard() {
+    Card(
+        border = BorderStroke(1.dp, Color(0xFF000000)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 10.dp, end = 15.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                alignment = Alignment.Center,
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(10.dp),
+                painter = painterResource(R.drawable.baseline_info_24),
+                contentDescription = "Steps"
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(
+                    text = "A standard glass in this context contains around 200 ml.",
+                    fontSize = 18.sp,
+                    maxLines = 2
+                )
             }
         }
     }

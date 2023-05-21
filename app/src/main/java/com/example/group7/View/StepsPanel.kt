@@ -1,19 +1,19 @@
  package com.example.group7.View
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -113,6 +113,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
  @Composable
  fun IndividualGoalsCard(optionsAction: () -> Unit, goalProgress: Float) {
      Card(
+         border = BorderStroke(1.dp, Color(0xFF000000)),
          modifier = Modifier
              .fillMaxWidth()
              .padding(16.dp),
@@ -230,6 +231,7 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
     var steps by remember { mutableStateOf(0) }
 
     Card(
+        border = BorderStroke(1.dp, Color(0xFF000000)),
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp),
