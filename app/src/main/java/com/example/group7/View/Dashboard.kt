@@ -114,6 +114,7 @@ fun DashboardContent(navController: NavController) {
 
                 //item { DailyGoalsCard() }
                 if(stepgoalviewModel.checkStepGoalReached(stepsGoal,stepCount)){
+                    //only shown if goal has been reached, therefore input "fake" numbers to show 100% completion and x/x steps taken etc
                     item { GoalReachedCard("Step goal reached!", 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
                 } else {
                     item { ProgressCard("Steps",stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
