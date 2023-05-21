@@ -107,9 +107,19 @@ fun DashboardContent(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
             ) {
-                item { ProgressCard("Steps", stepIcon, stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
-                item { ProgressCard("Sleep", sleepIcon, sleepProgress, { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) }, navController ) }
+
+                //item { DailyGoalsCard() }
+                if(stepgoalviewModel.checkStepGoalReached(stepsGoal,stepCount)){
+                    //only shown if goal has been reached, therefore input "fake" numbers to show 100% completion and x/x steps taken etc
+                    item { GoalReachedCard("Step goal reached!",stepIcon, 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
+                } else {
+                    item { ProgressCard("Steps",stepIcon,stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
+                }
+                //for testing
+                //item { GoalReachedCard("Step goal reached!",stepIcon, 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
+                item { ProgressCard("Sleep",sleepIcon,sleepProgress, { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) }, navController ) }
                 item { WaterIntakePanel(navController)}
+                //item { ChooseGoalTypePanel()}
             }
         }
     )
@@ -243,6 +253,7 @@ fun ProgressCard(title : String, icon : Painter, progressPercentage : Float, Pro
                     painter = icon,
                     contentDescription = "Steps"
                 )
+                // Progressbar() TODO make progressbar
             }
 
             }
@@ -250,6 +261,131 @@ fun ProgressCard(title : String, icon : Painter, progressPercentage : Float, Pro
         }
 
     }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GoalReachedCard(title : String, progressPercentage : Float, Progress: @Composable () -> Unit , navController: NavController) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
+            .clickable {
+                //bara placeholder för att se så de funkar, nu kommer alla cards leda till stepspanel
+                navController.navigate(Screen.StepsPanel.route)
+            },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp),
+        border = BorderStroke(3.dp, Color(0xFF000000)),
+    ) {
+        Row(modifier = Modifier.height(150.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .fillMaxHeight()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = title,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        textAlign = TextAlign.Left,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.W900
+                    )
+                    Progress()
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(end = 36.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.82f)
+                        .padding(end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center)
+                {
+                    Text(text = "Choose new goal?", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(20.dp))
+                    CustomLinearProgressBar(InitProgress = progressPercentage)
+                }
+                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Say what", modifier = Modifier
+                    .size(24.dp)
+                    .padding(start = 5.dp))
+
+                // Progressbar() TODO make progressbar
+            }
+
+        }
+
+    }
+
+}
+
+/*@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DailyGoalsCard(){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
+            .clickable { *//* TODO Navigate to chosen screen *//* },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp),
+        border = BorderStroke(1.dp, Color(0xFF000000)),
+    )
+    {
+        Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
+        {
+            Text(text = "Daily remaining Goals", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp).align(Alignment.CenterVertically))
+        }
+        Divider(color = Color(0xFF000000), thickness = 2.dp, modifier = Modifier.fillMaxWidth(0.8f))
+        *//*Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
+        {
+            Text(
+                buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            color = Color(0xFF3B7CD9),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append("DRINK")
+                    }
+                }
+            )
+            Box(
+                modifier = Modifier
+                    .background(shape = RoundedCornerShape(16.dp), color = Color(0xFF000000))
+                    .padding(16.dp)
+            ) {
+                Text(
+                    "2",
+                    fontSize = 16.sp
+                )
+            }
+            //val logo: Painter = painterResource(R.drawable.ambundi_logo)
+            Text(text = "GLASSES", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(5.dp))
+            Icon(painter = painterResource(R.drawable.ic_launcher_background), contentDescription = "Botuh of watuh", modifier = Modifier.size(28.dp).align(Alignment.CenterVertically))
+        }*//*
+
+
+
+    }
+}*/
+
+
 
 @Composable
 private fun CustomLinearProgressBar(InitProgress: Float){
