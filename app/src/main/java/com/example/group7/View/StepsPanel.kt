@@ -88,6 +88,10 @@ import com.example.group7.ViewModel.StepGoalViewModel
              contentPadding = innerPadding,
              verticalArrangement = Arrangement.spacedBy(8.dp)
          ) {
+//             item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
+             item { StepsInputCard { newSteps ->
+                 stepCount = newSteps
+             } }
              if (hasIndividualGoal) item { IndividualGoalsCard( { showDialog = true }, goalProgress )}
              if (showDialog) item {
                  CustomGoalPopup(
@@ -425,6 +429,26 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
                      }
                  }
              }
+         }
+     }
+ }
+
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+ fun StepsInputCard(onStepsChange: (Int) -> Unit){
+     var (steps) = remember { mutableStateOf("") }
+
+     Card(shape = MaterialTheme.shapes.medium, modifier = Modifier.padding(16.dp)) {
+         Column(modifier = Modifier.padding(16.dp)) {
+             Text(text = "Input step progress:")
+             TextField(value = steps, onValueChange = { newValue ->
+                 steps = newValue
+                 val newSteps = newValue.toIntOrNull() ?: 0
+                 onStepsChange(newSteps)
+             }, modifier = Modifier.padding(top = 8.dp), keyboardOptions = KeyboardOptions(
+                 keyboardType = KeyboardType.Number,
+                 imeAction = ImeAction.Done
+             ), keyboardActions = KeyboardActions(onDone = {  }))
          }
      }
  }
