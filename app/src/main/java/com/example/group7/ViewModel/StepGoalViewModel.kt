@@ -1,6 +1,7 @@
 package com.example.group7.ViewModel
 
 import android.content.Context
+import androidx.compose.runtime.isTraceInProgress
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.group7.Model.apitest
@@ -34,6 +35,13 @@ class StepGoalViewModel(context: Context) : ViewModel() {
             onResult(stepGoal)
 
          }
+    }
+
+    fun checkStepGoalReached(goal: Int, progress: Int): Boolean {
+        if(progress>=goal){
+            return true
+        }
+        return false
     }
 
 
