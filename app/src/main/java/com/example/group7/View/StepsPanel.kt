@@ -33,6 +33,9 @@ import com.example.group7.R
 import com.example.group7.ViewModel.Screen
 import com.example.group7.ViewModel.StepGoalViewModel
 import com.example.group7.common.FileManager
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 @Preview
 @Composable
@@ -162,7 +165,9 @@ fun StepsContent(navController: NavController) {
                         )
 
                         Box(modifier = Modifier.align(Alignment.Center)) {
-                            var goalPercentage = (goalProgress) * 100
+                            val df = DecimalFormat("#.##")
+                            df.roundingMode = RoundingMode.FLOOR
+                            var goalPercentage = df.format((goalProgress) * 100).toDouble()
                             Text(text = "$goalPercentage% of goal reached", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodyLarge)
                         }
                     }
