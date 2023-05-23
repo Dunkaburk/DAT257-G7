@@ -3,7 +3,6 @@ package com.example.group7.View
 
 //import androidx.navigation.NavController
 
-import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -38,7 +37,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
 import com.example.group7.ViewModel.Screen
 import com.example.group7.ViewModel.StepGoalViewModel
-import com.example.group7.common.FileManager
 
 
 @Composable
@@ -50,38 +48,25 @@ fun Dashboard(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardContent(navController: NavController) {
+        val logo: Painter = painterResource(R.drawable.eologo)
+        val stepIcon : Painter = painterResource(R.drawable.footprint_24px)
+        val sleepIcon : Painter = painterResource(R.drawable.baseline_bedtime_24)
 
-    val context = LocalContext.current
-    val logo: Painter = painterResource(R.drawable.eologo)
-    val stepIcon: Painter = painterResource(R.drawable.footprint_24px)
-    val sleepIcon: Painter = painterResource(R.drawable.baseline_bedtime_24)
+        val context = LocalContext.current
 
+        var stepsGoal by remember { mutableStateOf(0) }
+        var sleepGoal by remember { mutableStateOf(8*60) }
+        val stepgoalviewModel = StepGoalViewModel(context = context)
+        stepgoalviewModel.getStepGoal {
+                stepGoal -> stepsGoal = stepGoal
+        }
+        var sleepCount by remember { mutableStateOf(2*60) }
+        var stepCount by remember { mutableStateOf(0) }
+        println(stepsGoal)
+        var stepProgress by remember { mutableStateOf(stepCount/stepsGoal.toFloat()) }
+        var sleepProgress by remember { mutableStateOf(sleepCount/sleepGoal.toFloat()) }
 
-    val goals = FileManager.retrieveGoals(context)
-    var stepsLoadGoals = 0
-    var sleepLoadGoal = 0
-    var waterLoadGoal = 0
-    if (goals != null) {
-        stepsLoadGoals = goals.stepsGoal
-        sleepLoadGoal = goals.sleepGoal
-        waterLoadGoal = goals.waterGoal
-        Log.d("Stepgoal:", "Goal progress: $stepsLoadGoals")
-        Log.d("Sleepgoal:", "Goal progress: $sleepLoadGoal")
-        Log.d("Watergoal:", "Goal progress: $waterLoadGoal")
-    }
-    var stepsGoal by remember { mutableStateOf(stepsLoadGoals) }
-    var sleepGoal by remember { mutableStateOf(8 * 60) }
-    val stepgoalviewModel = StepGoalViewModel(context = context)
-    stepgoalviewModel.getStepGoal { stepGoal ->
-        stepsGoal = stepGoal
-    }
-    var sleepCount by remember { mutableStateOf(2 * 60) }
-    var stepCount by remember { mutableStateOf(0) }
-    println(stepsGoal)
-    var stepProgress by remember { mutableStateOf(stepCount / stepsGoal.toFloat()) }
-    var sleepProgress by remember { mutableStateOf(sleepCount / sleepGoal.toFloat()) }
-
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -125,55 +110,21 @@ fun DashboardContent(navController: NavController) {
             ) {
 
                 //item { DailyGoalsCard() }
-                if (stepgoalviewModel.checkStepGoalReached(stepsGoal, stepCount)) {
+                if(stepgoalviewModel.checkStepGoalReached(stepsGoal,stepCount)){
                     //only shown if goal has been reached, therefore input "fake" numbers to show 100% completion and x/x steps taken etc
-                    item {
-                        GoalReachedCard(
-                            "Step goal reached!",
-                            1.0f,
-                            { StepsProgress(stepsProgress = stepCount, context = context) },
-                            navController
-                        )
-                    }
+                    item { GoalReachedCard("Step goal reached!", 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
                 } else {
-                    item {
-                        ProgressCard(
-                            "Steps",
-                            stepIcon,
-                            stepProgress,
-                            { StepsProgress(stepsProgress = stepCount, context = context) },
-                            navController
-                        )
-                    }
+                    item { ProgressCard("Steps",stepIcon,stepProgress, { StepsProgress(stepsProgress = stepCount, stepsGoal = stepsGoal) }, navController) }
                 }
                 //for testing
                 //item { GoalReachedCard("Step goal reached!", 1.0f, { StepsProgress(stepsProgress = stepsGoal, stepsGoal = stepsGoal) }, navController)}
-                item {
-                    ProgressCard(
-                        "Sleep",
-                        sleepIcon,
-                        sleepProgress,
-                        { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) },
-                        navController
-                    )
-                }
-                item { WaterIntakePanel(navController) }
+                item { ProgressCard("Sleep",sleepIcon,sleepProgress, { SleepProgress(sleepProgress = sleepCount, sleepGoal = sleepGoal) }, navController ) }
+                item { WaterIntakePanel(navController)}
                 //item { ChooseGoalTypePanel()}
-                item {
-                    Button(
-                        onClick = { FileManager.saveGoals(context, 0, 0, 0) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        Text("Reset goals")
-                    }
-                }
             }
         }
     )
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -187,7 +138,7 @@ fun WaterIntakePanel(navController: NavController) {
             .padding(top = 2.dp, bottom = 2.dp, start = 15.dp, end = 15.dp)
             .clickable { navController.navigate(Screen.WaterPanel.route) },
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp)
+                defaultElevation = 10.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxSize()
@@ -277,7 +228,7 @@ fun ProgressCard(title : String, icon : Painter, progressPercentage : Float, Pro
                     )
                     Progress()
                 }
-            }
+                }
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -306,11 +257,11 @@ fun ProgressCard(title : String, icon : Painter, progressPercentage : Float, Pro
                 // Progressbar() TODO make progressbar
             }
 
+            }
+
         }
 
     }
-
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -493,7 +444,7 @@ fun LinearProgressIndicatorTestfunnyhaha() {
 
 
 @Composable
-fun StepsProgress(stepsProgress : Int, context: android.content.Context) {
+fun StepsProgress(stepsProgress : Int, stepsGoal : Int) {
     var steps by remember { mutableStateOf(stepsProgress) }
     Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
     {
@@ -509,7 +460,7 @@ fun StepsProgress(stepsProgress : Int, context: android.content.Context) {
                 }
                 withStyle(style = SpanStyle(fontWeight = FontWeight.W300, fontSize = 18.sp)
                 ) {
-                    append(FileManager.retrieveSteps(context = context).toString())
+                    append(stepsGoal.toString())
                 }
             }
         )
@@ -551,3 +502,7 @@ fun SleepProgress(sleepProgress : Int, sleepGoal : Int) {
 
     }
 }
+
+
+
+//------------------------------------------------------------
