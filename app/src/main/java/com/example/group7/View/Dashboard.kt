@@ -216,13 +216,13 @@ fun WaterIntakePanel(navController: NavController) {
                 OutlinedButton(
                     modifier = Modifier.padding(8.dp),
                     onClick = { if (waterCount > 0) waterCount--},
+
                 ) {
                     Text(text = "-", fontSize = 28.sp, fontWeight = FontWeight.Bold)
                 }
                 OutlinedButton(
                     modifier = Modifier.padding(8.dp),
                     onClick = { waterCount++ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF313131))
                 ) {
                     Text(text = "+", fontSize = 28.sp)
                 }
