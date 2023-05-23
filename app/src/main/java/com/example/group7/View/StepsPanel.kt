@@ -175,9 +175,11 @@ fun StepsContent(navController: NavController) {
                     onDismissRequest = { showDialog = false },
                     onSaveButtonClick = { inputNumber ->
                         println("Input number: $inputNumber")
-                        goalProgress = inputNumber.toFloat()
+                        stepCount = inputNumber.toInt()
+                        goalProgress = stepCount.toFloat()/stepsGoal.toFloat()
                         showDialog = false
-                    }
+                    },
+                    context = context
                 )
             }
             item { ChooseGoalPanel (stepGoalViewModel, onSaveClicked = { steps ->
@@ -268,7 +270,7 @@ fun IndividualGoalsCard(optionsAction: () -> Unit, goalProgress: Float) {
 }
 
 @Composable
-fun CustomGoalPopup(onDismissRequest: () -> Unit, onSaveButtonClick: (String) -> Unit) {
+fun CustomGoalPopup(onDismissRequest: () -> Unit, onSaveButtonClick: (String) -> Unit, context: android.content.Context) {
     val inputNumber = remember { mutableStateOf("") }
 
     AlertDialog(
@@ -291,7 +293,9 @@ fun CustomGoalPopup(onDismissRequest: () -> Unit, onSaveButtonClick: (String) ->
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { onSaveButtonClick(inputNumber.value) }
+                        onDone = {
+                            onSaveButtonClick(inputNumber.value)
+                            FileManager.saveStepCount(context, inputNumber.value.toInt())}
                     ),
                     modifier = Modifier.padding(top = 8.dp)
                 )
@@ -343,13 +347,15 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit, context
             when (tabIndex) {
                 0 -> CityToCityTab(vm, onTabValueChanged = {
                         value -> steps = value
-                    FileManager.saveGoals(context, value, 0, 0 )})
+                    FileManager.saveSteps(context, value)
+                    })
                 1 -> ImaginativeGoalsTab(onTabValueChanged = {
                         value -> steps = value
-                    FileManager.saveGoals(context, value, 0, 0 )})
+                    FileManager.saveSteps(context, value)
+                })
                 2 -> CustomStepsTab(onTabValueChanged = { value ->
                     steps = value
-                    FileManager.saveGoals(context, value, 0, 0 )
+                    FileManager.saveSteps(context, value)
                 })
             }
         }
