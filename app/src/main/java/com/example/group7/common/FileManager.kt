@@ -8,6 +8,8 @@ object FileManager {
 
     private const val PREF_NAME = "health_goals"
     private const val KEY_GOALS = "goals"
+    private const val KEY_STEP_COUNT = "key_step_count"
+    private const val KEY_STEP_GOAL = "key_step_goal"
     private const val STEPS_GOAL = "stepsGoal"
     private const val STEPS_COUNT = "stepCount"
 
@@ -31,7 +33,10 @@ object FileManager {
         goals.put(STEPS_GOAL, stepsGoal)
         val editor = getSharedPreferences(context).edit()
         editor.putString(KEY_GOALS, goals.toString())
+        editor.putString(KEY_STEP_GOAL, goals.toString())
         editor.apply()
+        Log.d("FileManager", "Step Goal saved: $stepsGoal")
+
     }
 
     fun saveStepCount(context: Context, stepCount: Int) {
@@ -39,25 +44,25 @@ object FileManager {
         goals.put(STEPS_COUNT, stepCount)
         val editor = getSharedPreferences(context).edit()
         editor.putString(KEY_GOALS, goals.toString())
+        editor.putString(KEY_STEP_COUNT, goals.toString())
         editor.apply()
         Log.d("FileManager", "Step count saved: $stepCount")
     }
 
 
 
-    fun retrieveGoals(context: Context): Goals? {
+    fun retrieveGoals(context: Context): Int? {
         val json = getSharedPreferences(context).getString(KEY_GOALS, null)
         if (json != null) {
             val jsonObject = JSONObject(json)
             val stepsGoal = jsonObject.getInt(STEPS_GOAL)
-            val stepCount = jsonObject.getInt(STEPS_COUNT)
-            return Goals(stepsGoal, 0, 0, stepCount)
+            return stepsGoal
         }
         return null
     }
 
     fun retrieveStepCount(context: Context): Int? {
-        val json = getSharedPreferences(context).getString(KEY_GOALS, null)
+        val json = getSharedPreferences(context).getString(KEY_STEP_COUNT, null)
         if (json != null) {
             val jsonObject = JSONObject(json)
             val stepCount = jsonObject.getInt(STEPS_COUNT)
@@ -67,10 +72,11 @@ object FileManager {
     }
 
     fun retrieveSteps(context: Context): Int? {
-        val json = getSharedPreferences(context).getString(KEY_GOALS, null)
+        val json = getSharedPreferences(context).getString(KEY_STEP_GOAL, null)
         if (json != null) {
             val jsonObject = JSONObject(json)
             val stepsGoal = jsonObject.getInt(STEPS_GOAL)
+            Log.d("FileManager", "Step goal_ $stepsGoal")
             return stepsGoal
         }
         return null

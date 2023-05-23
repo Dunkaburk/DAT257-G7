@@ -58,12 +58,14 @@ fun DashboardContent(navController: NavController) {
 
 
     val stepsthing = FileManager.retrieveSteps(context)
+    val stepsCurr = FileManager.retrieveStepCount(context)
     var stepsLoadCurrent = 0
     var stepsLoadGoals = 0
     var sleepLoadGoal = 0
     var waterLoadGoal = 0
-    if (stepsthing != null) {
+    if (stepsthing != null && stepsCurr != null) {
         stepsLoadGoals = stepsthing
+        stepsLoadCurrent = stepsCurr
         Log.d("Stepgoal:", "Goal progress: $stepsLoadGoals")
     }
     var stepsGoal by remember { mutableStateOf(stepsLoadGoals) }
@@ -175,7 +177,6 @@ fun DashboardContent(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterIntakePanel(navController: NavController) {
-    val paddingModifier = Modifier.padding(12.dp)
     var waterCount by remember { mutableStateOf(0) }
     Card(
         border = BorderStroke(1.dp, Color(0xFF000000)),
@@ -227,7 +228,7 @@ fun WaterIntakePanel(navController: NavController) {
                     modifier = Modifier
                         .size(24.dp)
                         .padding(start = 4.dp),
-                    painter = painterResource(R.drawable.water_full_48px), // TODO INSERT WATER ICON
+                    painter = painterResource(R.drawable.water_full_48px),
                     contentDescription = "Glass of water"
                 )
             }

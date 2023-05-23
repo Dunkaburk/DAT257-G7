@@ -182,6 +182,7 @@ fun StepsContent(navController: NavController) {
                         println("Input number: $inputNumber")
                         stepCount = inputNumber.toInt()
                         goalProgress = stepCount.toFloat()/stepsGoal.toFloat()
+                        FileManager.saveStepCount(context, stepCount)
                         showDialog = false
                     },
                     context = context
