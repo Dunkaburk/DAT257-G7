@@ -1,0 +1,15 @@
+Week: 5
+
+
+Time spent: 10 hours
+
+
+What do I want to learn or understand better? Consider e.g. teamwork, Scrum, agile processes, technologies etc?
+this week i had to leave the group because of personal reasons. but i still managed to work with alva for a bit
+
+What is my contribution towards the team’s deliveries? How can I help my team do better next sprint?
+next week is the last sprint so i will try to finish the last gui stuff aswell as some essential functions
+that still aren't done
+
+Changes/improvements from last week's reflection?
+i feel i have a good understanding of the code and the language.
