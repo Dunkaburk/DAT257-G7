@@ -1,5 +1,6 @@
  package com.example.group7.View
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.group7.R
 import com.example.group7.ViewModel.Screen
 import com.example.group7.ViewModel.StepGoalViewModel
+import com.example.group7.common.FileManager
 
  @Preview
  @Composable
@@ -50,6 +52,10 @@ import com.example.group7.ViewModel.StepGoalViewModel
      var hasIndividualGoal by remember { mutableStateOf(false) } // TODO make getter and setter for this variable and set to false first time a user opens app and when goal is completed
      var goalProgress by remember { mutableStateOf(stepCount.toFloat()/stepsGoal.toFloat()) }
      val stepGoalViewModel = StepGoalViewModel(context = context)
+
+     fun updateProgress(NewProgress: Float){
+         goalProgress = NewProgress/stepsGoal.toFloat()
+     }
 
      val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
      Scaffold(
@@ -89,25 +95,97 @@ import com.example.group7.ViewModel.StepGoalViewModel
              verticalArrangement = Arrangement.spacedBy(8.dp)
          ) {
 //             item { GoalProgressCard() } @Tantan snälla kolla på det här vi pajar allt om vi tar bort det :(((
-             item { StepsInputCard { newSteps ->
-                 stepCount = newSteps
-             } }
-             if (hasIndividualGoal) item { IndividualGoalsCard( { showDialog = true }, goalProgress )}
+
+
+             //if (hasIndividualGoal) item { IndividualGoalsCard( { showDialog = true }, progress )}
+             if (hasIndividualGoal) item {Card(
+                 border = BorderStroke(1.dp, Color(0xFF000000)),
+                 modifier = Modifier
+                     .fillMaxWidth()
+                     .padding(16.dp),
+                 elevation = CardDefaults.cardElevation(8.dp)
+             ) {
+                 Column(
+                     modifier = Modifier
+                         .padding(8.dp)
+                         .fillMaxWidth()
+                 ) {
+                     Row(
+                         modifier = Modifier.fillMaxWidth(),
+                         horizontalArrangement = Arrangement.SpaceBetween,
+                         verticalAlignment = Alignment.CenterVertically
+                     ) {
+                         Box(
+                             modifier = Modifier
+                                 .fillMaxWidth()
+                         )
+                         {
+                             Text(
+                                 text = "Goal",
+                                 textAlign = TextAlign.Center,
+                                 style = MaterialTheme.typography.headlineSmall,
+                                 modifier = Modifier.align(Alignment.Center)
+                             )
+                             Box(
+                                 modifier = Modifier
+                                     .align(Alignment.CenterEnd)
+                                     .padding(end = 8.dp)
+                             )
+                             {
+                                 IconButton(onClick = { showDialog = true }) {
+                                     Icon(
+                                         painter = painterResource(R.drawable.footprint_24px),
+                                         contentDescription = "Set steps",
+                                         modifier = Modifier.size(32.dp)
+                                     )
+                                 }
+                             }
+                         }
+
+
+                     }
+                     Spacer(modifier = Modifier.height(16.dp))
+                     Box(
+                         modifier = Modifier
+                             .fillMaxWidth()
+                             .height(270.dp)
+                             .align(Alignment.CenterHorizontally)
+                     )
+                     {
+                         CircularProgressIndicator(
+                             progress = goalProgress,
+                             strokeWidth = 24.dp,
+                             color = MaterialTheme.colorScheme.primary,
+                             modifier = Modifier
+                                 .align(Alignment.Center)
+                                 .size(270.dp)
+                         )
+
+                         Box(modifier = Modifier.align(Alignment.Center)) {
+                             var goalPercentage = (goalProgress) * 100
+                             Text(text = "$goalPercentage% of goal reached", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodyLarge)
+                         }
+                     }
+
+                 }
+             }}
+
              if (showDialog) item {
                  CustomGoalPopup(
                      onDismissRequest = { showDialog = false },
                      onSaveButtonClick = { inputNumber ->
                          println("Input number: $inputNumber")
-                         stepsGoal = inputNumber.toInt()
+                         goalProgress = inputNumber.toFloat()
                          showDialog = false
-                     })
+                     }
+                 )
              }
              item { ChooseGoalPanel (stepGoalViewModel, onSaveClicked = { steps ->
                  stepsGoal = steps
                  println("Steps goal updated: $stepsGoal")
                  hasIndividualGoal = true
                  goalProgress = stepCount.toFloat()/stepsGoal.toFloat()
-             })
+             }, context)
              }
          }
      }
@@ -171,7 +249,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
              )
              {
                  CircularProgressIndicator(
-                     progress = 0.6f,
+                     progress = goalProgress,
                      strokeWidth = 24.dp,
                      color = MaterialTheme.colorScheme.primary,
                      modifier = Modifier
@@ -196,11 +274,11 @@ import com.example.group7.ViewModel.StepGoalViewModel
      AlertDialog(
          onDismissRequest = onDismissRequest,
          title = {
-             Text("Customized goal")
+             Text("Set your step progress")
          },
          text = {
              Column {
-                 Text("Choose step goals")
+                 Text("Set progress")
                  TextField(
                      value = inputNumber.value,
                      onValueChange = { value ->
@@ -231,7 +309,7 @@ import com.example.group7.ViewModel.StepGoalViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
+fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit, context: android.content.Context) {
     var steps by remember { mutableStateOf(0) }
 
     Card(
@@ -263,10 +341,15 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
                  }
              }
              when (tabIndex) {
-                 0 -> CityToCityTab(vm, onTabValueChanged = { value -> steps = value})
-                 1 -> ImaginativeGoalsTab(onTabValueChanged = { value -> steps = value})
+                 0 -> CityToCityTab(vm, onTabValueChanged = {
+                         value -> steps = value
+                     FileManager.saveGoals(context, value, 0, 0 )})
+                 1 -> ImaginativeGoalsTab(onTabValueChanged = {
+                         value -> steps = value
+                     FileManager.saveGoals(context, value, 0, 0 )})
                  2 -> CustomStepsTab(onTabValueChanged = { value ->
                      steps = value
+                     FileManager.saveGoals(context, value, 0, 0 )
                  })
              }
          }
@@ -448,7 +531,7 @@ fun ChooseGoalPanel(vm: StepGoalViewModel, onSaveClicked: (Int) -> Unit) {
              }, modifier = Modifier.padding(top = 8.dp), keyboardOptions = KeyboardOptions(
                  keyboardType = KeyboardType.Number,
                  imeAction = ImeAction.Done
-             ), keyboardActions = KeyboardActions(onDone = {  }))
+             ), keyboardActions = KeyboardActions(onDone = { onStepsChange(steps.toIntOrNull() ?: 0) }))
          }
      }
  }
