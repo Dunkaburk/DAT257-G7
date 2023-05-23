@@ -1,6 +1,7 @@
 package com.example.group7.common
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import org.json.JSONObject
 
 object FileManager {
@@ -8,20 +9,18 @@ object FileManager {
     private const val PREF_NAME = "health_goals"
     private const val KEY_GOALS = "goals"
     private const val STEPS_GOAL = "stepsGoal"
-    private const val SLEEP_GOAL = "sleepGoal"
-    private const val WATER_GOAL = "waterGoal"
+    private const val STEPS_COUNT = "stepCount"
 
-    data class Goals(val stepsGoal: Int, val sleepGoal: Int, val waterGoal: Int)
+    data class Goals(val stepsGoal: Int, val sleepGoal: Int, val waterGoal: Int, val stepCount: Int)
 
     private fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
-    fun saveGoals(context: Context, stepsGoal: Int, sleepGoal: Int, waterGoal: Int) {
+    fun saveGoals(context: Context, stepsGoal: Int, sleepGoal: Int, waterGoal: Int, stepCount: Int) {
         val goals = JSONObject()
         goals.put(STEPS_GOAL, stepsGoal)
-        goals.put(SLEEP_GOAL, sleepGoal)
-        goals.put(WATER_GOAL, waterGoal)
+        goals.put(STEPS_COUNT, stepCount)
         val editor = getSharedPreferences(context).edit()
         editor.putString(KEY_GOALS, goals.toString())
         editor.apply()
@@ -35,6 +34,15 @@ object FileManager {
         editor.apply()
     }
 
+    fun saveStepCount(context: Context, stepCount: Int) {
+        val goals = JSONObject()
+        goals.put(STEPS_COUNT, stepCount)
+        val editor = getSharedPreferences(context).edit()
+        editor.putString(KEY_GOALS, goals.toString())
+        editor.apply()
+        Log.d("FileManager", "Step count saved: $stepCount")
+    }
+
 
 
     fun retrieveGoals(context: Context): Goals? {
@@ -42,9 +50,18 @@ object FileManager {
         if (json != null) {
             val jsonObject = JSONObject(json)
             val stepsGoal = jsonObject.getInt(STEPS_GOAL)
-            val sleepGoal = jsonObject.getInt(SLEEP_GOAL)
-            val waterGoal = jsonObject.getInt(WATER_GOAL)
-            return Goals(stepsGoal, sleepGoal, waterGoal)
+            val stepCount = jsonObject.getInt(STEPS_COUNT)
+            return Goals(stepsGoal, 0, 0, stepCount)
+        }
+        return null
+    }
+
+    fun retrieveStepCount(context: Context): Int? {
+        val json = getSharedPreferences(context).getString(KEY_GOALS, null)
+        if (json != null) {
+            val jsonObject = JSONObject(json)
+            val stepCount = jsonObject.getInt(STEPS_COUNT)
+            return stepCount
         }
         return null
     }

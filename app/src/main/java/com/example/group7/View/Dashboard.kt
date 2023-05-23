@@ -57,17 +57,14 @@ fun DashboardContent(navController: NavController) {
     val sleepIcon: Painter = painterResource(R.drawable.baseline_bedtime_24)
 
 
-    val goals = FileManager.retrieveGoals(context)
+    val stepsthing = FileManager.retrieveSteps(context)
+    var stepsLoadCurrent = 0
     var stepsLoadGoals = 0
     var sleepLoadGoal = 0
     var waterLoadGoal = 0
-    if (goals != null) {
-        stepsLoadGoals = goals.stepsGoal
-        sleepLoadGoal = goals.sleepGoal
-        waterLoadGoal = goals.waterGoal
+    if (stepsthing != null) {
+        stepsLoadGoals = stepsthing
         Log.d("Stepgoal:", "Goal progress: $stepsLoadGoals")
-        Log.d("Sleepgoal:", "Goal progress: $sleepLoadGoal")
-        Log.d("Watergoal:", "Goal progress: $waterLoadGoal")
     }
     var stepsGoal by remember { mutableStateOf(stepsLoadGoals) }
     var sleepGoal by remember { mutableStateOf(8 * 60) }
@@ -76,7 +73,7 @@ fun DashboardContent(navController: NavController) {
         stepsGoal = stepGoal
     }
     var sleepCount by remember { mutableStateOf(2 * 60) }
-    var stepCount by remember { mutableStateOf(0) }
+    var stepCount by remember { mutableStateOf(stepsLoadCurrent) }
     println(stepsGoal)
     var stepProgress by remember { mutableStateOf(stepCount / stepsGoal.toFloat()) }
     var sleepProgress by remember { mutableStateOf(sleepCount / sleepGoal.toFloat()) }
@@ -161,7 +158,7 @@ fun DashboardContent(navController: NavController) {
                 //item { ChooseGoalTypePanel()}
                 item {
                     Button(
-                        onClick = { FileManager.saveGoals(context, 0, 0, 0) },
+                        onClick = { FileManager.saveGoals(context, 0, 0, 0, 0) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
