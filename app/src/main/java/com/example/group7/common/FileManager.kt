@@ -27,16 +27,6 @@ object FileManager {
         editor.apply()
     }
 
-    fun saveSteps(context: Context, stepsGoal: Int) {
-        val goals = JSONObject()
-        goals.put(STEPS_GOAL, stepsGoal)
-        val editor = getSharedPreferences(context).edit()
-        editor.putString(KEY_GOALS, goals.toString())
-        editor.apply()
-    }
-
-
-
     fun retrieveGoals(context: Context): Goals? {
         val json = getSharedPreferences(context).getString(KEY_GOALS, null)
         if (json != null) {
@@ -45,16 +35,6 @@ object FileManager {
             val sleepGoal = jsonObject.getInt(SLEEP_GOAL)
             val waterGoal = jsonObject.getInt(WATER_GOAL)
             return Goals(stepsGoal, sleepGoal, waterGoal)
-        }
-        return null
-    }
-
-    fun retrieveSteps(context: Context): Int? {
-        val json = getSharedPreferences(context).getString(KEY_GOALS, null)
-        if (json != null) {
-            val jsonObject = JSONObject(json)
-            val stepsGoal = jsonObject.getInt(STEPS_GOAL)
-            return stepsGoal
         }
         return null
     }
